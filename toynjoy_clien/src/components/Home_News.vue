@@ -1,15 +1,15 @@
 <template>
-    <div id="new_news_3">
+    <div id="home_news">
         <!--最新的前3条新闻-->
         <p>
             <span>新闻消息</span>
         </p>
-        <div v-for="(n, index) in news" :content="`@(${index + 1})`" class="news" :nid="n.id">
-            <div :class="`content nn5_c@(${index + 1})`">
+        <div v-for="(n, index) in news" class="news">
+            <div class="content">
                 <label>{{ index + 1 }}</label>
                 <ul>
-                    <li>{{ n.updateTime }}</li>
-                    <li class="title">{{ n.title }}</li>
+                    <li>{{ n.title }}</li>
+                    <li>{{ n.updateTime | timeformater }}</li>
                     <li>{{ n.commend }}&nbsp;人觉得很赞</li>
                 </ul>
             </div>
@@ -20,44 +20,36 @@
 <script>
 export default {
     name: 'Home_News',
-    data() {
-        return {
-            news: []
+    filters: {
+        timeformater(dateStr) {
+            let result = dateStr.split('T')[0];
+            let dateArr = result.split('-');
+            result = `${dateArr[0]}年${dateArr[1]}月${dateArr[2]}日`
+            return result;
         }
     },
-    mounted() {
-        this.axiosGet('News/find', { orderby: 'UpdateTime', count: 3 })
-            .then((response) => {
-                this.news = response.data
-                console.log(this.news);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });;
-    }
+    props: ['news']
 }
 </script>
 
 <style scoped>
-#new_news_3>p {
-    /*新闻前3*/
-    line-height: 3vw;
-    padding: 1vw 2.5vw;
-    font-size: 1.7vw;
+#home_news>p {
     font-weight: bold;
+    font-size: 25px;
+    line-height: 45px;
+    padding: 1vw 2vw;
     margin: 0;
-    /*background-color: pink;*/
 }
 
-#new_news_3>p>span {
+#home_news>p>span {
     display: block;
     text-align: center;
-    width: 7vw;
-    border-bottom: 0.4vw solid red;
+    width: 105px;
+    border-bottom: 6.5px solid red;
     user-select: none;
 }
 
-#new_news_3>div {
+.news {
     background-color: white;
     /* width: 100%; */
     height: 18vw;
@@ -71,16 +63,20 @@ export default {
     cursor: pointer;
 }
 
-#new_news_3 .content {
-    border: 0.02vw solid #d6d6d6;
-    /*width:40%;*/
+.news:nth-child(3) {
+    /* border:0.02vw solid #d6d6d6; */
 }
 
-#new_news_3 .content>* {
+.news:hover {
+    background-color: #656565;
+    background-Image: url('http://localhost:8080/System/file/image?name=system/blackgoat.png');
+}
+
+.content>* {
     float: left;
 }
 
-#new_news_3 .content>label {
+.content>label {
     display: block;
     background-color: #e31d3b;
     width: 5vw;
@@ -94,15 +90,14 @@ export default {
     user-select: none;
 }
 
-#new_news_3 .content>ul {
+.content>ul {
     list-style: none;
     margin-left: 12vw;
     margin-top: 3vw;
     height: 12vw;
-    color: black;
 }
 
-#new_news_3 .content>ul>li {
+.content li {
     height: 4vw;
     line-height: 4vw;
     font-size: 1vw;
@@ -110,8 +105,11 @@ export default {
     font-weight: 500;
 }
 
-#new_news_3 .content>ul>.title {
-    font-size: 1.35vw;
-    font-weight: 700;
+.content li:nth-child(1) {
+    font-size: 1.5vw;
+}
+
+.news:hover li {
+    color: white;
 }
 </style>

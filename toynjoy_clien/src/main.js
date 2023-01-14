@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import router from './router';
+import { mixin } from './mixin'
+import VueRouter from 'vue-router';
+
+import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
+
+import App from './App.vue'
 
 Vue.config.productionTip = false
 
 // mixin 全局配置
-import { mixin } from './mixin'
 Vue.mixin(mixin);
 
-import App from './App.vue'
-
-import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 new Vue({

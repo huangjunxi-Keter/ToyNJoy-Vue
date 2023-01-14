@@ -7,8 +7,17 @@ import Home from '../pages/Home';
 export default new VueRouter({
     routes: [
         {
+            path: '/',
+            // hidden: true,
+            redirect: 'home',
+        },
+        {
+            name: 'home',
             path: '/Home',
-            component: Home
+            component: Home,
+            meta: {
+                title: '首页'
+            }
         }
     ]
 });

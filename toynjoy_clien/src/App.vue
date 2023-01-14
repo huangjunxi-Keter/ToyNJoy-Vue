@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <head-navigation id="header" />
+    <head-navigation />
     <div>
       <router-view></router-view>
     </div>
@@ -16,8 +16,12 @@ export default {
     'head-navigation': Head_Navigation
   },
   mounted() {
-    this.$bus.$on('goHome', function () {
-      this.$router.push('/Home');
+    this.$bus.$on('routeGo', function (routeName) {
+      if (this.$route.name != routeName) {
+        this.$router.push({ name: routeName });
+      } else {
+        this.$router.go(0)
+      }
     });
   }
 }

@@ -4,12 +4,12 @@
         <p>
             <span>新闻消息</span>
         </p>
-        <div v-for="(n, index) in news" class="news">
+        <div v-for="(n, index) in news" :key="n.id" class="news">
             <div class="content">
                 <label>{{ index + 1 }}</label>
                 <ul>
-                    <li>{{ n.title }}</li>
                     <li>{{ n.updateTime | timeformater }}</li>
+                    <li class="title">{{ n.title }}</li>
                     <li>{{ n.commend }}&nbsp;人觉得很赞</li>
                 </ul>
             </div>
@@ -20,14 +20,6 @@
 <script>
 export default {
     name: 'Home_News',
-    filters: {
-        timeformater(dateStr) {
-            let result = dateStr.split('T')[0];
-            let dateArr = result.split('-');
-            result = `${dateArr[0]}年${dateArr[1]}月${dateArr[2]}日`
-            return result;
-        }
-    },
     props: ['news']
 }
 </script>
@@ -63,11 +55,8 @@ export default {
     cursor: pointer;
 }
 
-.news:nth-child(3) {
-    /* border:0.02vw solid #d6d6d6; */
-}
-
 .news:hover {
+    padding-left: 15vw;
     background-color: #656565;
     background-Image: url('http://localhost:8080/System/file/image?name=system/blackgoat.png');
 }
@@ -105,11 +94,15 @@ export default {
     font-weight: 500;
 }
 
-.content li:nth-child(1) {
+.content li:nth-child(2) {
     font-size: 1.5vw;
 }
 
 .news:hover li {
     color: white;
+}
+
+.news:hover li:nth-child(2) {
+    color: #e31d3b;
 }
 </style>

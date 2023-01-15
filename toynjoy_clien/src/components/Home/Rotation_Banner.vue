@@ -11,7 +11,7 @@
             </ul>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <div v-for="product in productsActive" class="product_box"
+                    <div v-for="product in productsActive" :key="product.id" class="product_box"
                         :style="{ 'background-image': `url('${getImage('products/' + product.image)}')` }"
                         @click="go(product.id)">
                         <p>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <div v-for="product in products" class="product_box"
+                    <div v-for="product in products" :key="product.id" class="product_box"
                         :style="{ 'background-image': `url('${getImage('products/' + product.image)}')` }"
                         @click="go(product.id)">
                         <p>
@@ -44,6 +44,11 @@ import 'bootstrap/js/dist/carousel'
 
 export default {
     name: 'Rotation_Banner',
+    methods: {
+        go(id) {
+            this.$bus.$emit('routeGo', 'product', { id });
+        }
+    },
     props: ['products', 'productsActive', 'title', 'rid']
 }
 </script>
@@ -57,7 +62,7 @@ export default {
 }
 
 .carousel-control-prev,
-.carousel-control-next{
+.carousel-control-next {
     background-color: black;
     opacity: 1;
 }
@@ -108,7 +113,7 @@ export default {
     line-height: 45px;
     position: absolute;
     bottom: 0;
-    background-color: rgba(0,0,0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     font-size: 20px;
     margin: 0;

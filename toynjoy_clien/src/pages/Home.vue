@@ -1,18 +1,23 @@
 <template>
   <div>
-    <display-board :products="displayBoardData" />
+    <div id="display_board_list">
+      <!--最新的前4个游戏-->
+      <div v-for="product in displayBoardData">
+        <display-board :products="displayBoardData" :product="product" />
+      </div>
+    </div>
     <home-news :news="homeNewsData" />
-    <rotation-banner rid="purchases" title="销量冠军" :productsActive="rotationBannerData_purchasesTop_active" :products="rotationBannerData_purchasesTop" />
-    <rotation-banner rid="browse" title="最受关注" :productsActive="rotationBannerData_browseTop_active" :products="rotationBannerData_browseTop" />
-    <clien-footer />
+    <rotation-banner rid="purchases" title="销量冠军" :productsActive="rotationBannerData_purchasesTop_active"
+      :products="rotationBannerData_purchasesTop" />
+    <rotation-banner rid="browse" title="最受关注" :productsActive="rotationBannerData_browseTop_active"
+      :products="rotationBannerData_browseTop" />
   </div>
 </template>
 
 <script>
-import Display_Board from '@/components/Display_Board.vue';
-import Home_News from '@/components/Home_News.vue';
-import Rotation_Banner from '@/components/Rotation_Banner.vue';
-import Clien_Footer from '@/components/Clien_Footer.vue';
+import Display_Board from '@/components/Home/Display_Board.vue';
+import Home_News from '@/components/Home/Home_News.vue';
+import Rotation_Banner from '@/components/Home/Rotation_Banner.vue';
 
 export default {
   name: 'Home',
@@ -29,8 +34,7 @@ export default {
   components: {
     'display-board': Display_Board,
     'home-news': Home_News,
-    'rotation-banner': Rotation_Banner,
-    'clien-footer': Clien_Footer
+    'rotation-banner': Rotation_Banner
   },
   mounted() {
     //#region 顶部大模块数据
@@ -87,5 +91,12 @@ export default {
 </script>
 
 <style scoped>
-
+#display_board_list {
+  /*商品前4*/
+  width: 100%;
+  min-width: 1300px;
+  /* height: 100vh;
+    min-height: 800px; */
+  user-select: none;
+}
 </style>

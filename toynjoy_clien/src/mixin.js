@@ -35,5 +35,15 @@ export const mixin = {
         isLogin() {
             return localStorage.getItem('LoginUser');
         }
-    }
+    },
+    filters: {
+        timeformater(dateStr) {
+            if (dateStr) {
+                dateStr = dateStr.split('T')[0];
+                let dateArr = dateStr.split('-');
+                dateStr = `${dateArr[0]}年${dateArr[1]}月${dateArr[2]}日`
+            }
+            return dateStr;
+        }
+    },
 }

@@ -1,24 +1,26 @@
 <template>
   <div id="app">
     <head-navigation />
-    <div>
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
+    <clien-footer />
   </div>
 </template>
 
 <script>
-import Head_Navigation from './components/Head_Navigation.vue'
+import Head_Navigation from '@/components/Head_Navigation.vue';
+import Clien_Footer from '@/components/Footer.vue';
 
 export default {
   name: 'App',
   components: {
-    'head-navigation': Head_Navigation
+    'head-navigation': Head_Navigation,
+    'clien-footer': Clien_Footer
   },
   mounted() {
-    this.$bus.$on('routeGo', function (routeName) {
-      if (this.$route.name != routeName) {
-        this.$router.push({ name: routeName });
+    this.$bus.$on('routeGo', function (name, params) {
+      // 判断，目标路由不是当前路由再跳转（重复跳转回报错）
+      if (this.$route.name != name) {
+        this.$router.push({ name, params });
       } else {
         this.$router.go(0)
       }

@@ -29,30 +29,43 @@ export default {
     name: 'HeadNavigation',
     data() {
         return {
-            logo: 'system/logo_black.png'
+            logo: 'system/logo_black.png',
         }
     },
     methods: {
         go(routeName) {
             this.$bus.$emit('routeGo', routeName);
         },
+        // 修改样式（Class）
         changClass(className) {
+            // console.log(className);
             this.$refs.header.className = className;
             for (let li of this.$refs.menu.children) {
                 li.className = className;
                 li.children[0].className = className;
             }
+        },
+        // 窗体滚动事件
+        windowOnScroll() {
+            let isOnTop = document.documentElement.scrollTop === 0;
+            this.changClass(isOnTop ? 'forHome' : 'default');
+        },
+        updateHead() {
+            let isHome = (this.$route.name === 'home');
+            this.changClass(isHome ? 'forHome' : 'default');
+            if (isHome)
+                window.addEventListener('scroll', this.windowOnScroll);
+            else
+                window.removeEventListener('scroll', this.windowOnScroll);
+        }
+    },
+    watch: {
+        '$route.name'(newName, oldName) {
+            this.updateHead();
         }
     },
     mounted() {
-        let isHome = (this.$route.name === 'home');
-        this.changClass(isHome ? 'forHome' : 'default');
-        if (isHome) {
-            window.onscroll = () => {
-                let isOnTop = document.documentElement.scrollTop === 0;
-                this.changClass(isOnTop ? 'forHome' : 'default');
-            }
-        }
+        this.updateHead();
     }
 }
 </script>

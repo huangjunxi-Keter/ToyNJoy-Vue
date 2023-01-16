@@ -2,12 +2,13 @@ import axios from 'axios';
 
 export const mixin = {
     methods: {
-        //#region 封装 axios get 方法
-        axiosGet({ url, params, success }) {
+        //#region 封装 axios 方法
+        myAxios({ method, url, params, data, success }) {
             let request = axios({
-                method: 'get',
+                method: method ? method : 'get',
                 url: `http://localhost:8080/${url}`,
-                params
+                params,
+                data
             });
             request.then(response => success(response))
             request.catch(error => {
@@ -15,25 +16,22 @@ export const mixin = {
             });
         },
         //#endregion
-        //#region 封装 axios post 方法
-        axiosPost(url, data) {
-            let result = axios({
-                method: 'post',
-                url: `http://localhost:8080/${url}`,
-                data
-            });
-            return result;
-        },
-        //#endregion
+
         //#region 获取图片
         getImage(name) {
             return `http://localhost:8080/System/file/image?name=${name}`
-        }
+        },
+        //#endregion
+
+        //#region 路由跳转
+        go(routeName) {
+            this.$bus.$emit('routeGo', routeName);
+        },
         //#endregion
     },
     computed: {
         isLogin() {
-            return localStorage.getItem('LoginUser');
+            return localStorage.getItem('LoginUserToken');
         }
     },
     filters: {

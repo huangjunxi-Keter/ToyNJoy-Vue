@@ -33,9 +33,6 @@ export default {
         }
     },
     methods: {
-        go(routeName) {
-            this.$bus.$emit('routeGo', routeName);
-        },
         // 修改样式（Class）
         changClass(className) {
             // console.log(className);

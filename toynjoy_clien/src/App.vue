@@ -19,11 +19,13 @@ export default {
   mounted() {
     this.$bus.$on('routeGo', function (name, params) {
       // 判断，目标路由不是当前路由再跳转（重复跳转回报错）
-      if (this.$route.name != name) {
+      if (this.$route.name != name && this.$route.params != params) {
         this.$router.push({ name, params });
       } else {
         this.$router.go(0)
       }
+      // 页面回到顶部
+      scrollTo(0, 0);
     });
   }
 }

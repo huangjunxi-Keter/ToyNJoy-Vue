@@ -20,8 +20,7 @@ export default {
 <style scoped>
 #footer {
     width: 100%;
-    min-width: 1000px;
-    margin-top: 20px;
+    min-width: 1300px;
     padding: 45px 0 60px 0;
     background-color: white;
     box-shadow: 0 0 10px 0.5px #bbbbbb;
@@ -47,6 +46,6 @@ export default {
 }
 
 #footer>ul>li>a {
-    color: #54a6f5;
+    color: black;
 }
 </style>

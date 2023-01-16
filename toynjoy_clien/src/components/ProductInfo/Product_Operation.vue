@@ -31,23 +31,26 @@ export default {
     },
     mounted() {
         if (this.isLogin) {
-            console.log('isLogin');
+            // console.log('isLogin');
         }
     },
     props: ['product']
 }
 </script>
 
-<style>
+<style scoped>
 #operation {
     width: 100%;
+    min-width: 1000px;
     height: 6.4vw;
+    min-height: 90px;
     user-select: none;
 }
 
 #operation>.content {
     width: 100%;
     height: 5vw;
+    min-height: 70px;
     line-height: 5vw;
     position: relative;
     box-shadow: 0 0 0.35vw 0.05vw #909090;
@@ -60,17 +63,20 @@ export default {
 #operation>.content>div {
     line-height: initial;
     height: 2.85vw;
+    min-height: 40px;
     position: absolute;
-    top: 3.6vw;
+    top: 70%;
     background-color: white;
     box-shadow: 0 0 0.2vw 0.05vw #909090;
     font-size: 1.1vw;
+    border-radius: 0.2vw;
 }
 
 #operation>.content>div>button {
     border: none;
     margin: 0.2vw 0.15vw 0.15vw 0.15vw;
     height: 2.5vw;
+    min-height: 36px;
     padding: 0 0.5vw;
     border-radius: 0.2vw;
     outline: none;

@@ -17,7 +17,7 @@
 <script>
 import Display_Board from '@/components/Home/Display_Board.vue';
 import Home_News from '@/components/Home/Home_News.vue';
-import Rotation_Banner from '@/components/Home/Rotation_Banner.vue';
+import Rotation_Banner from '@/components/Rotation_Banner.vue';
 
 export default {
   name: 'Home',
@@ -38,7 +38,7 @@ export default {
   },
   mounted() {
     //#region 顶部大模块数据
-    this.axiosGet({
+    this.myAxios({
       url: 'Product/find',
       params: { orderby: 'ReleaseDate', count: 4 },
       success: (response) => {
@@ -48,7 +48,7 @@ export default {
     //#endregion
 
     //#region 新闻模块数据
-    this.axiosGet({
+    this.myAxios({
       url: 'News/find',
       params: { orderby: 'UpdateTime', count: 3 },
       success: (response) => {
@@ -58,7 +58,7 @@ export default {
     //#endregion
 
     //#region 购买量最多的前8个
-    this.axiosGet({
+    this.myAxios({
       url: 'Product/find',
       params: { orderby: 'Purchases', count: 8 },
       success: (response) => {
@@ -73,7 +73,7 @@ export default {
     //#endregion
 
     //#region 浏览量量最多的前8个
-    this.axiosGet({
+    this.myAxios({
       url: 'Product/find',
       params: { orderby: 'Browse', count: 8 },
       success: (response) => {

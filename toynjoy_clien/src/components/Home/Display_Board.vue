@@ -45,7 +45,7 @@ export default {
     },
     mounted() {
         //#region 商品图集
-        this.axiosGet({
+        this.myAxios({
             url: 'ProductPhotoGallery/getByProductId',
             params: { id: this.product.id },
             success: (response) => {
@@ -136,7 +136,7 @@ export default {
     transition: 0.5s;
     cursor: pointer;
 
-    background-color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .contentOpen {
@@ -145,6 +145,7 @@ export default {
     transition: 0.5s;
 
     height: 70%;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .contentOpen>div,

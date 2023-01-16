@@ -1,8 +1,9 @@
-import VueRouter from "vue-router";
+import VueRouter from "vue-router"
 
 //#region 组件
-import Home from '../pages/Home';
-import Product_Info from '../pages/Product_Info'
+import Home from '@/pages/Home'
+import Product_Info from '@/pages/Product_Info'
+import Login from '@/pages/Login'
 //#endregion
 
 export default new VueRouter({
@@ -28,8 +29,16 @@ export default new VueRouter({
                 title: '商品详情'
             },
             props({query, params}) {
-                return { ...query, ...params };
+                return { ...query, ...params }
             }
         },
+        {
+            name: 'login',
+            path: '/Login',
+            component: Login,
+            meta: {
+                title: '登录'
+            }
+        }
     ]
 });

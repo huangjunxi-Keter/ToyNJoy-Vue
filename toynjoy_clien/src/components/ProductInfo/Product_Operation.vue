@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     name: 'Product_Operation',
     data() {
@@ -28,6 +30,9 @@ export default {
             inWishList: false,
             inShoppingCar: false
         }
+    },
+    computed: {
+        ...mapState(['isLogin'])
     },
     mounted() {
         if (this.isLogin) {

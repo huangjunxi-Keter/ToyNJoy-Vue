@@ -1,6 +1,6 @@
 <template>
     <div id="header" ref="header">
-        <a id="Logo" href="/HuangJunXi/Admin_Home" :style="{ 'background-image': `url(${getImage(logo)})` }"></a>
+        <a id="Logo" @click.prevent="go('home')" :style="{ 'background-image': `url(${getImage(logo)})` }"></a>
         <ul ref="menu">
             <li>
                 <a @click.prevent="go('home')">主页</a>
@@ -25,12 +25,17 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     name: 'HeadNavigation',
     data() {
         return {
             logo: 'system/logo_black.png',
         }
+    },
+    computed: {
+        ...mapState(['isLogin'])
     },
     methods: {
         // 修改样式（Class）

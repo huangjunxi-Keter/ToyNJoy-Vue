@@ -1,12 +1,21 @@
 import axios from 'axios';
 
+//#region  配置 axios 的默认值（反正没在 main 引入，就到这里配算了）
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('LoginUserToken')}`;
+//#endregion
+
 export const mixin = {
+    data() {
+        return {
+            serverPath: 'http://localhost:8080/'
+        }
+    },
     methods: {
         //#region 封装 axios 方法
         myAxios({ method, url, params, data, success }) {
             let request = axios({
                 method: method ? method : 'get',
-                url: `http://localhost:8080/${url}`,
+                url: this.serverPath + url,
                 params,
                 data
             });
@@ -19,7 +28,7 @@ export const mixin = {
 
         //#region 获取图片
         getImage(name) {
-            return `http://localhost:8080/System/file/image?name=${name}`
+            return `${this.serverPath}System/file/image?name=${name}`
         },
         //#endregion
 
@@ -28,11 +37,6 @@ export const mixin = {
             this.$bus.$emit('routeGo', routeName);
         },
         //#endregion
-    },
-    computed: {
-        isLogin() {
-            return localStorage.getItem('LoginUserToken');
-        }
     },
     filters: {
         timeformater(dateStr) {

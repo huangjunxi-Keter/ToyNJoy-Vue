@@ -20,6 +20,8 @@ import Product_Operation from '@/components/ProductInfo/Product_Operation.vue';
 import Hardware_Requirements from '@/components/ProductInfo/Hardware_Requirements.vue';
 import Has_Product_Friends from '@/components/ProductInfo/Has_Product_Friends.vue';
 
+import { mapState } from "vuex";
+
 export default {
     name: 'Product_Info',
     data() {
@@ -29,6 +31,9 @@ export default {
             hardwareRequirements: {},
             hasProductFriends: []
         }
+    },
+    computed: {
+        ...mapState(['isLogin'])
     },
     mounted() {
         //#region 商品信息
@@ -63,13 +68,13 @@ export default {
 
         //#region 拥有游戏的好友
         if (this.isLogin) {
-            this.myAxios({
-                url: 'Friend/find',
-                params: { UserName: this.isLogin.user.name },
-                success: (response) => {
-                    this.hasProductFriends = response.data;
-                }
-            });
+            // this.myAxios({
+            //     url: 'Friend/find',
+            //     params: { UserName: this.isLogin.user.name },
+            //     success: (response) => {
+            //         this.hasProductFriends = response.data;
+            //     }
+            // });
         }
         //#endregion
     },

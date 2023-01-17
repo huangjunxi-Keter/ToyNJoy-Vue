@@ -3,18 +3,21 @@
     <head-navigation />
     <router-view></router-view>
     <clien-footer />
+    <toolbar />
   </div>
 </template>
 
 <script>
 import Head_Navigation from '@/components/Head_Navigation.vue';
 import Clien_Footer from '@/components/Footer.vue';
+import Toolbar from '@/components/Tool/Toolbar.vue';
 
 export default {
   name: 'App',
   components: {
     'head-navigation': Head_Navigation,
-    'clien-footer': Clien_Footer
+    'clien-footer': Clien_Footer,
+    'toolbar': Toolbar
   },
   mounted() {
     this.$bus.$on('routeGo', function (name, params) {

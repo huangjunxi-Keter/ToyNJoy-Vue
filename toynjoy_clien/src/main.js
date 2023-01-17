@@ -1,27 +1,31 @@
-import Vue from 'vue'
-import { mixin } from './mixin'
-import router from './router'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import 'bootstrap/dist/css/bootstrap.css'
+import VueParticles from 'vue-particles';
+
+import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
-import App from './App.vue'
-import VueParticles from 'vue-particles'
+import { mixin } from './mixin';
+import router from './router';
+import store from './store';
 
-Vue.config.productionTip = false
+import App from './App.vue';
+
+Vue.config.productionTip = false;
 
 // mixin 全局配置
-Vue.mixin(mixin)
+Vue.mixin(mixin);
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 // 粒子特效
-Vue.use(VueParticles)
+Vue.use(VueParticles);
 
 new Vue({
   render: h => h(App),
   router,
+  store,
   beforeCreate() {
     Vue.prototype.$bus = this; //全局事件总线
   }
-}).$mount('#app')
+}).$mount('#app');

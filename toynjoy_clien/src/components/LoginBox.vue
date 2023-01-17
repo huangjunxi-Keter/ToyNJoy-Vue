@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
     name: 'LoginBox',
     data() {
@@ -42,6 +44,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['UPDATE_LOGIN_USER']),
         login() {
             if (this.user.username.trim() != '' && this.user.password.trim() != '') {
                 this.message = '';
@@ -53,10 +56,8 @@ export default {
                         if (response.data.code == 0)
                             this.message = response.data.message;
                         else {
-                            window.localStorage.setItem('LoginUserToken', response.headers.token);
+                            this.UPDATE_LOGIN_USER(response.headers.token);
                             this.$router.go(-1);
-
-                            // 把 isLogin 用 vuex 托管 实现其他组件的刷新
                         }
                     }
                 });

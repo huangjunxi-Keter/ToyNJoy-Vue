@@ -5,7 +5,7 @@
             <li @click="changeToolbarState"
                 :style="{ 'background-image': `url('${getImage('system/' + toolbarStateImage + '.png')}')` }">
             </li>
-            <li class="user" :style="{ 'background-image': `url('${getImage('user/' + userImage)}')` }"></li>
+            <li @click="go('userInfo')" :style="{ 'background-image': `url('${getImage('user/' + userImage)}')` }"></li>
             <li v-if="isLogin" :style="{ 'background-image': `url('${getImage('system/friend.png')}')` }">
             </li>
             <li class="find" :style="{ 'background-image': `url('${getImage('system/sel_yellow.png')}')` }"></li>
@@ -27,7 +27,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState('system', ['isLogin'])
     },
     methods: {
         changeToolbarState() {
@@ -43,7 +43,7 @@ export default {
             this.myAxios({
                 url: 'User/userImageName',
                 success: (response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     this.userImage = response.data;
                 }
             });

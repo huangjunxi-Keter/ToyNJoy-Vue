@@ -44,7 +44,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['UPDATE_LOGIN_USER']),
+        ...mapMutations('system', ['UPDATE_LOGIN_USER']),
         login() {
             if (this.user.username.trim() != '' && this.user.password.trim() != '') {
                 this.message = '';

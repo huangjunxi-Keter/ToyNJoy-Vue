@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { mapMutations } from 'vuex';
 
 //#region  配置 axios 的默认值（反正没在 main 引入，就到这里配算了）
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('LoginUserToken')}`;
@@ -11,9 +12,11 @@ export const mixin = {
         }
     },
     methods: {
+        ...mapMutations('system', ['UPDATE_LOGIN_USER']),
         //#region 封装 axios 方法
-        myAxios({ method, url, params, data, success }) {
+        myAxios({ method, url, params, data, success, headers }) {
             let request = axios({
+                headers,
                 method: method ? method : 'get',
                 url: this.serverPath + url,
                 params,
@@ -22,6 +25,9 @@ export const mixin = {
             request.then(response => success(response))
             request.catch(error => {
                 console.log(error);
+                if (error.response.status == 401) {
+                    this.UPDATE_LOGIN_USER(null);
+                }
             });
         },
         //#endregion

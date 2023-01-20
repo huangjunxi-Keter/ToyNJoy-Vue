@@ -35,7 +35,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState('system', ['isLogin'])
     },
     methods: {
         // 修改样式（Class）

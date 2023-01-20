@@ -4,6 +4,7 @@ import VueRouter from "vue-router"
 import Home from '@/pages/Home'
 import Product_Info from '@/pages/Product_Info'
 import Login from '@/pages/Login'
+import UserInfo from '@/pages/User_Info'
 //#endregion
 
 export default new VueRouter({
@@ -38,6 +39,14 @@ export default new VueRouter({
             component: Login,
             meta: {
                 title: '登录'
+            }
+        },
+        {
+            name: 'userInfo',
+            path: '/UserInfo',
+            component: UserInfo,
+            meta: {
+                title: '个人中心'
             }
         }
     ]

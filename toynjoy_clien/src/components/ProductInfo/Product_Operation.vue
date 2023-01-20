@@ -32,7 +32,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState('system', ['isLogin'])
     },
     mounted() {
         if (this.isLogin) {

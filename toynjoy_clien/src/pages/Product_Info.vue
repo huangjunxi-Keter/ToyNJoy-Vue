@@ -33,7 +33,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState('system', ['isLogin'])
     },
     mounted() {
         //#region 商品信息

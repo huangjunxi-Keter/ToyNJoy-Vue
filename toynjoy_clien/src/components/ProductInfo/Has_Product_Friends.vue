@@ -21,7 +21,7 @@ import { mapState } from "vuex";
 export default {
     name: 'Has_Product_Friends',
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState('system', ['isLogin'])
     },
     props: ['hasProductFriends']
 }

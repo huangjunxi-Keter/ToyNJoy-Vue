@@ -7,6 +7,6 @@ export default {
         }
     },
     state: {
-        isLogin: (localStorage.getItem('LoginUserToken') != null),
+        isLogin: (localStorage.getItem('LoginUserToken') != null && localStorage.getItem('LoginUserToken') != ''),
     }
 }

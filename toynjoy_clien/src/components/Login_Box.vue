@@ -15,7 +15,7 @@
                     <button @click="login">确 定</button>
                 </li>
                 <li class="registered">
-                    <a href="/HuangJunXi/Registered">加入ToyNJoy</a>
+                    <a @click.prevent="go('register')">加入ToyNJoy</a>
                 </li>
             </ul>
         </div>
@@ -77,7 +77,7 @@ export default {
 }
 
 .content {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 1);
     width: 30vw;
     margin: auto;
     border-radius: 1vw;
@@ -91,12 +91,18 @@ export default {
     text-align: center;
 }
 
-.content li>* {
+.content li>input,
+.content li>button {
     height: 5vh;
     margin: 2vh auto;
     outline: none;
     border: none;
     border-radius: 0.6vw;
+}
+
+.content li>a {
+    user-select: none;
+    cursor: pointer;
 }
 
 .content input {

@@ -68,6 +68,7 @@ export default {
 #product_name {
     font-size: 1.8vw;
     font-weight: 500;
+    padding-top: 1vw;
 }
 
 #basic_information {

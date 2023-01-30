@@ -13,7 +13,7 @@
                 <div class="carousel-item active">
                     <div v-for="product in productsActive" :key="product.id" class="product_box"
                         :style="{ 'background-image': `url('${getImage('products/' + product.image)}')` }"
-                        @click="go(product.id)">
+                        @click="go('product', { id: product.id })">
                         <p>
                             <span> {{ product.name }} </span>
                         </p>
@@ -22,7 +22,7 @@
                 <div class="carousel-item">
                     <div v-for="product in products" :key="product.id" class="product_box"
                         :style="{ 'background-image': `url('${getImage('products/' + product.image)}')` }"
-                        @click="go(product.id)">
+                        @click="go('product', { id: product.id })">
                         <p>
                             <span> {{ product.name }} </span>
                         </p>
@@ -44,11 +44,6 @@ import 'bootstrap/js/dist/carousel'
 
 export default {
     name: 'Rotation_Banner',
-    methods: {
-        go(id) {
-            this.$bus.$emit('routeGo', 'product', { id });
-        }
-    },
     props: ['products', 'productsActive', 'title', 'rid']
 }
 </script>

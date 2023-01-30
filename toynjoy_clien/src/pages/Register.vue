@@ -23,17 +23,17 @@
                 :moveSpeed="3">
             </vue-particles>
         </div>
-        <login-box />
+        <register-box />
     </div>
 </template>
 
 <script>
-import LoginBox from '@/components/Login_Box.vue';
+import Register_Box from '@/components/Register_Box.vue';
 
 export default {
-    name: 'Login',
+    name: 'Register',
     components: {
-        'login-box': LoginBox
+        'register-box': Register_Box
     }
 }
 </script>
@@ -43,5 +43,6 @@ export default {
     overflow-y: hidden;
     padding: 0;
     margin: 0;
+    height: calc(100vh - 195px);
 }
 </style>

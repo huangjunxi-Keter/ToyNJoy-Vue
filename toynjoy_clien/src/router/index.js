@@ -5,6 +5,9 @@ import Home from '@/pages/Home'
 import Product_Info from '@/pages/Product_Info'
 import Login from '@/pages/Login'
 import UserInfo from '@/pages/User_Info'
+import Store from '@/pages/Store'
+import Register from '@/pages/Register'
+import WishList from '@/pages/Wish_List'
 //#endregion
 
 export default new VueRouter({
@@ -42,12 +45,36 @@ export default new VueRouter({
             }
         },
         {
+            name: 'register',
+            path: '/Register',
+            component: Register,
+            meta: {
+                title: '注册'
+            }
+        },
+        {
             name: 'userInfo',
             path: '/UserInfo',
             component: UserInfo,
             meta: {
                 title: '个人中心'
             }
-        }
+        },
+        {
+            name: 'store',
+            path: '/Store',
+            component: Store,
+            meta: {
+                title: '商店'
+            }
+        },
+        {
+            name: 'wishlist',
+            path: '/WishList',
+            component: WishList,
+            meta: {
+                title: '愿望单'
+            }
+        },
     ]
 });

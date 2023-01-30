@@ -15,7 +15,7 @@
                 <a @click.prevent="go('library')">库</a>
             </li>
             <li v-if="isLogin">
-                <a @click.prevent="go('wishList')">愿望单</a>
+                <a @click.prevent="go('wishlist')">愿望单</a>
             </li>
             <li v-if="isLogin">
                 <a @click.prevent="go('shoppingCar')">购物车</a>
@@ -113,7 +113,7 @@ export default {
 div.default {
     height: 5vw;
     background-color: white;
-    box-shadow: 0 0 0.03vw 0.08vw rgba(225, 225, 225, 0.5);
+    box-shadow: 0 0 10px 0.5px #bbbbbb;
 }
 
 li.default {

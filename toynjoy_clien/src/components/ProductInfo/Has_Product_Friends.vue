@@ -41,6 +41,7 @@ export default {
     letter-spacing: 0.25vw;
     color: #606060;
     user-select: none;
+    cursor: pointer;
 }
 
 #Has_Product_Friends>p>a {

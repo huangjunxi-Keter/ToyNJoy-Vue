@@ -91,7 +91,6 @@ export default {
 <style scoped>
 .bodyer {
     width: 70vw;
-    margin: 6.5vw auto 0 auto;
 }
 
 .intro {

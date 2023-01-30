@@ -5,7 +5,7 @@
             <li @click="changeToolbarState"
                 :style="{ 'background-image': `url('${getImage('system/' + toolbarStateImage + '.png')}')` }">
             </li>
-            <li @click="go('userInfo')" :style="{ 'background-image': `url('${getImage('user/' + userImage)}')` }"></li>
+            <li @click="goUser" :style="{ 'background-image': `url('${getImage('user/' + userImage)}')` }"></li>
             <li v-if="isLogin" :style="{ 'background-image': `url('${getImage('system/friend.png')}')` }">
             </li>
             <li class="find" :style="{ 'background-image': `url('${getImage('system/sel_yellow.png')}')` }"></li>
@@ -36,11 +36,20 @@ export default {
         },
         goTop() {
             document.documentElement.scrollTop = 0;
+        },
+        goUser() {
+            if (this.isLogin)
+                this.go('userInfo');
+            else
+                this.go('login');
         }
     },
     mounted() {
         if (this.isLogin) {
             this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
                 url: 'User/userImageName',
                 success: (response) => {
                     // console.log(response.data);

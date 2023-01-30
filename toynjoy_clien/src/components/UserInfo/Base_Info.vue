@@ -93,7 +93,10 @@ export default {
                 formData.append('virtualImage', this.$refs.newVirtual.files[0]);
                 // console.log(formData.get('virtualImage'));// FormData私有类对象，访问不到，可以通过get判断值是否传进去
                 this.myAxios({
-                    headers: { 'Content-type': 'multipart/form-data' },
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                    },
                     method: 'post',
                     url: 'User/updateVirtual',
                     data: formData,
@@ -109,14 +112,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .basic_info {
     background-color: white;
     width: 85vw;
+    min-width: 1200px;
     height: 12vw;
+    min-height: 150px;
     margin: 0 auto;
-    box-shadow: 0 0 0.1vw 0.1vw #e5e5e5;
-    border-radius: 0 0 0.5vw 0.5vw;
+    box-shadow: 0 0 1px 1px #e5e5e5;
+    border-radius: 0 0 10px 10px;
     background-size: 100%;
     background-position: center;
 }

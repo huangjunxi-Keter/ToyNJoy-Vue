@@ -8,6 +8,7 @@ import UserInfo from '@/pages/User_Info'
 import Store from '@/pages/Store'
 import Register from '@/pages/Register'
 import WishList from '@/pages/Wish_List'
+import ShoppingCart from '@/pages/Shopping_Cart'
 //#endregion
 
 export default new VueRouter({
@@ -74,6 +75,14 @@ export default new VueRouter({
             component: WishList,
             meta: {
                 title: '愿望单'
+            }
+        },
+        {
+            name: 'shoppingCart',
+            path: '/ShoppingCart',
+            component: ShoppingCart,
+            meta: {
+                title: '购物车'
             }
         },
     ]

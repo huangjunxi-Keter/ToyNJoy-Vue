@@ -8,7 +8,8 @@ import { mapMutations } from 'vuex';
 export const mixin = {
     data() {
         return {
-            serverPath: 'http://localhost:8080/',
+            requestAddress: 'http://localhost:8080/',
+            serverAddress: 'https://localhost:7046/',
             emailRegEx: /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/,
             idCardRegEx: /^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}([0-9]|x|X)$/,
             phoneNumberRegEx: /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/
@@ -21,7 +22,7 @@ export const mixin = {
             let request = axios({
                 headers,
                 method: method ? method : 'get',
-                url: this.serverPath + url,
+                url: this.requestAddress + url,
                 params,
                 data
             });
@@ -37,7 +38,7 @@ export const mixin = {
 
         //#region 获取图片
         getImage(name) {
-            return `${this.serverPath}System/file/image?name=${name}`
+            return `${this.requestAddress}System/file/image?name=${name}`
         },
         //#endregion
 

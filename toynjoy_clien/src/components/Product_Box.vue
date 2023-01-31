@@ -1,7 +1,7 @@
 <template>
     <div @click="go('product', { id: product.id })" class="product"
         :style="{ backgroundImage: `url('${getImage('products/' + product.image)}')` }">
-        <p v-if="inStore">
+        <p v-if="showPrice">
             <span class="p_name">{{ product.name }}</span>
             <span class="p_price" v-if="product.price == '0'">免费</span>
             <span class="p_price" v-else>￥{{ product.price }}</span>
@@ -12,7 +12,7 @@
 <script>
 export default {
     name: 'Product_Box',
-    props: ['product', 'inStore'],
+    props: ['product', 'showPrice'],
 }
 </script>
 
@@ -38,7 +38,7 @@ export default {
     position:absolute;
     bottom:0;
     background-color:white;
-    width:21vw;
+    width: 100%;
     height:2.5vw;
     line-height:2.5vw;
     border-radius:0 0 0.5vw 0.5vw;

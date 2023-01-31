@@ -131,7 +131,7 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
                     },
                     method: 'post',
-                    url: `${this.serverPath}User/upd`,
+                    url: `${this.requestAddress}User/upd`,
                     data: this.userData,
                 }).then((response) => {
                     let result = response;
@@ -142,7 +142,7 @@ export default {
                                 Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
                             },
                             method: 'post',
-                            url: `${this.serverPath}User/updInfo`,
+                            url: `${this.requestAddress}User/updInfo`,
                             data: this.userInfo,
                         });
                     }

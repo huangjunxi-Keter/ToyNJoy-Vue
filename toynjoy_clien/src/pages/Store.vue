@@ -2,7 +2,7 @@
     <div class="bodyer">
         <div class="products">
             <div class="productBoxs">
-                <product-box v-for="product in products" :product="product" :inStore="true" />
+                <product-box v-for="product in products" :product="product" :showPrice="true" />
             </div>
             <pagination :page="page" @updateData="getProducts" />
         </div>

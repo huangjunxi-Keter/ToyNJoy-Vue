@@ -18,7 +18,7 @@
                 <a @click.prevent="go('wishlist')">愿望单</a>
             </li>
             <li v-if="isLogin">
-                <a @click.prevent="go('shoppingCar')">购物车</a>
+                <a @click.prevent="go('shoppingCart')">购物车</a>
             </li>
         </ul>
     </div>

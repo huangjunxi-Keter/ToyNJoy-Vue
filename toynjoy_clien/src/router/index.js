@@ -9,6 +9,7 @@ import Store from '@/pages/Store'
 import Register from '@/pages/Register'
 import WishList from '@/pages/Wish_List'
 import ShoppingCart from '@/pages/Shopping_Cart'
+import PayCallback from '@/pages/Pay_Callback'
 //#endregion
 
 export default new VueRouter({
@@ -83,6 +84,17 @@ export default new VueRouter({
             component: ShoppingCart,
             meta: {
                 title: '购物车'
+            }
+        },
+        {
+            name: 'payCallback',
+            path: '/PayCallback/:orderId',
+            component: PayCallback,
+            meta: {
+                title: '支付回调'
+            },
+            props({query, params}) {
+                return { ...query, ...params }
             }
         },
     ]

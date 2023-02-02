@@ -23,18 +23,23 @@
                 :moveSpeed="3">
             </vue-particles>
         </div>
-        <login-box />
+        <div class="messageBox">
+            <span :class="{'message': true, 'updateOver': updateOver}">{{ message }}</span>
+            <div v-if="!updateOver" class="spinner-border text-primary"></div>
+        </div>
     </div>
 </template>
 
 <script>
-import LoginBox from '@/components/Login_Box.vue';
-
 export default {
-    name: 'Login',
-    components: {
-        'login-box': LoginBox
-    }
+    name: 'Pay_Callback',
+    data() {
+        return {
+            updateOver: false,
+            message: '支付成功！正在跟新库存'
+        }
+    },
+    props: ['orderId']
 }
 </script>
 
@@ -44,5 +49,29 @@ export default {
     padding: 0;
     margin: 0;
     height: calc(100vh - 195px);
+}
+
+.messageBox {
+    position: absolute;
+    top: calc(50% - 150px);
+    left: calc(50% - 250px);
+
+    background-color: white;
+    width: 500px;
+    text-align: center;
+    padding: 80px 0;
+    font-size: 25px;
+    color: #007bff!important;
+    box-shadow: 0 0 10px 0.5px #bbbbbb;
+    border-radius: 10px;
+}
+
+.message {
+    margin-right: 20px;
+    user-select: none;
+}
+
+.message.updateOver{
+    color: #28a745!important;
 }
 </style>

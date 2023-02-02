@@ -11,7 +11,7 @@
             <div class="operation">
                 <p>为自己购买还是作为礼物购买？请选一项以继续付款。</p>
                 <div>
-                    <button @click="toPayPage()">为自己购买</button>
+                    <button @click="createOrder()">为自己购买</button>
                     <button id="ForFriend">作为礼物购买</button>
                 </div>
             </div>
@@ -33,10 +33,13 @@ export default {
         }
     },
     methods: {
-        toPayPage() {
+        createOrder() {
             this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
                 method: 'post',
-                url: 'Pay/getPayForm',
+                url: 'Order/add',
                 success: (response) => {
                     //（！！！AdGuard 广告拦截器 会影响沙箱支付宝 使其支付后出现【系统有点忙】错误！！！）
                     const div = document.createElement('div');

@@ -24,8 +24,8 @@
             </vue-particles>
         </div>
         <div class="messageBox">
-            <span :class="{'message': true, 'updateOver': updateOver}">{{ message }}</span>
-            <div v-if="!updateOver" class="spinner-border text-primary"></div>
+            <span :class="{ 'message': true, 'updateOver': updateOver, 'error': error }">{{ message }}</span>
+            <div v-if="!updateOver && !error" class="spinner-border text-primary"></div>
         </div>
     </div>
 </template>
@@ -36,10 +36,28 @@ export default {
     data() {
         return {
             updateOver: false,
+            error: false,
             message: '支付成功！正在跟新库存'
         }
     },
-    props: ['orderId']
+    mounted() {
+        this.myAxios({
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+            },
+            method: 'post',
+            url: 'Library/add',
+            data: this.$attrs,
+            success: (response) => {
+                this.updateOver = response.data;
+                this.error = !response.data;
+                if (this.updateOver)
+                    this.message = "更新完成！新的商品已加入您的库存"
+                else
+                    this.message = "更新出现错误，请联系网站管理员！"
+            }
+        });
+    }
 }
 </script>
 
@@ -61,7 +79,7 @@ export default {
     text-align: center;
     padding: 80px 0;
     font-size: 25px;
-    color: #007bff!important;
+    color: #007bff !important;
     box-shadow: 0 0 10px 0.5px #bbbbbb;
     border-radius: 10px;
 }
@@ -71,7 +89,11 @@ export default {
     user-select: none;
 }
 
-.message.updateOver{
-    color: #28a745!important;
+.updateOver {
+    color: #28a745 !important;
+}
+
+.error {
+    color: #dc3545!important;
 }
 </style>

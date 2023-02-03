@@ -8,9 +8,9 @@
             <li>
                 <a @click.prevent="go('store')">商店</a>
             </li>
-            <li>
+            <!-- <li>
                 <a @click.prevent="go('sews')">新闻</a>
-            </li>
+            </li> -->
             <li v-if="isLogin">
                 <a @click.prevent="go('library')">库</a>
             </li>

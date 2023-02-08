@@ -1,7 +1,7 @@
 <template>
     <div class="bodyer">
         <product-basic-information :product="product" :photoList="photoList" />
-        <product-operation :product="product" />
+        <product-operation :product="product" :inLibrary="inLibrary" :inWishList="inWishList" :inShoppingCar="inShoppingCar" />
         <div class="intro">
             关于这款游戏
             <div class="content">
@@ -27,6 +27,11 @@ export default {
     data() {
         return {
             product: {},
+            
+            inLibrary: false,
+            inWishList: false,
+            inShoppingCar: false,
+
             photoList: [],
             hardwareRequirements: {},
             hasProductFriends: []
@@ -66,17 +71,46 @@ export default {
         });
         //#endregion
 
-        //#region 拥有游戏的好友
         if (this.isLogin) {
-            // this.myAxios({
-            //     url: 'Friend/find',
-            //     params: { UserName: this.isLogin.user.name },
-            //     success: (response) => {
-            //         this.hasProductFriends = response.data;
-            //     }
-            // });
+            //#region 查询是否在库中
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: `Library/find`,
+                params: { productId: this.id },
+                success: (response) => {
+                    this.inLibrary = response.data.length > 0;
+                }
+            });
+            //#endregion
+
+            //#region 查询是否在愿望单中
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: `WishList/find`,
+                params: { productId: this.id },
+                success: (response) => {
+                    this.inWishList = response.data.length > 0;
+                }
+            });
+            //#endregion
+            
+            //#region 查询是否在购物车中
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: `ShoppingCar/find`,
+                params: { productId: this.id },
+                success: (response) => {
+                    this.inShoppingCar = response.data.length > 0;
+                }
+            });
+            //#endregion
         }
-        //#endregion
     },
     components: {
         'product-basic-information': Product_Basic_Information,

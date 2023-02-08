@@ -2,7 +2,7 @@
     <div id="operation">
         <div class="content">
             <span>购买 {{ product.name }}</span>
-            <div id="add_Wish_List">
+            <div v-if="!inLibrary" id="add_Wish_List">
                 <button v-if="inWishList">已在愿望单中</button>
                 <button v-else>添加至愿望单</button>
             </div>
@@ -13,7 +13,7 @@
                 <label v-else-if="(product.price <= 0) && !inLibrary">免费</label>
                 <button v-if="inLibrary">已在库中</button>
                 <button v-else-if="inShoppingCar">已在购物车中</button>
-                <button v-else>添加至购物车</button>
+                <button v-else @click="addShoppingCart(product.id)">添加至购物车</button>
             </div>
         </div>
     </div>
@@ -24,22 +24,24 @@ import { mapState } from "vuex";
 
 export default {
     name: 'Product_Operation',
-    data() {
-        return {
-            inLibrary: false,
-            inWishList: false,
-            inShoppingCar: false
-        }
-    },
     computed: {
         ...mapState('system', ['isLogin'])
     },
-    mounted() {
-        if (this.isLogin) {
-            // console.log('isLogin');
+    methods: {
+        addShoppingCart(productId) {
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: 'ShoppingCar/add',
+                params: { productId },
+                success: (response) => {
+                    this.$router.go(0);
+                }
+            });
         }
     },
-    props: ['product']
+    props: ['product', 'inLibrary', 'inWishList', 'inShoppingCar']
 }
 </script>
 

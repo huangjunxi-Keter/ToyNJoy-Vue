@@ -4,7 +4,7 @@
         <span class="operation">
             <span v-if="product.price > 0">￥{{ product.price }}</span>
             <span v-else>免费</span>
-            <a class="delete" SCid="@item.id">移除</a>
+            <a class="delete" @click="remove()">移除</a>
         </span>
     </div>
 </template>
@@ -12,7 +12,21 @@
 <script>
 export default {
     name: 'Shopping_Cart_Item',
-    props: ['product']
+    methods: {
+        remove() {
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: 'ShoppingCar/del',
+                params: { id: this.id },
+                success: (response) => {
+                    this.$router.go(0);
+                }
+            });
+        }
+    },
+    props: ['product', 'id']
 }
 </script>
 

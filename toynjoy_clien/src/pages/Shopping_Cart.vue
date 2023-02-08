@@ -3,7 +3,7 @@
         <div class="left">
             <p>您的购物车</p>
             <div>
-                <shopping-cart-item v-for="sc in ShoppingCart" :product="sc.product" />
+                <shopping-cart-item v-for="sc in ShoppingCart" :id="sc.id" :product="sc.product" />
             </div>
             <settle-accounts :ShoppingCart="ShoppingCart" priceField="price" />
         </div>

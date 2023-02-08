@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     mutations: {
         UPDATE_LOGIN_USER(state, value) {
-            state.isLogin = (value != null);
+            state.isLogin = (value != null && value != '');
             localStorage.setItem('LoginUserToken', value);
         }
     },

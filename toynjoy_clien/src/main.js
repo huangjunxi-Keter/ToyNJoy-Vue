@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import VueParticles from 'vue-particles';
-
 import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -18,8 +16,6 @@ Vue.config.productionTip = false;
 Vue.mixin(mixin);
 
 Vue.use(VueRouter);
-// 粒子特效
-Vue.use(VueParticles);
 
 new Vue({
   render: h => h(App),

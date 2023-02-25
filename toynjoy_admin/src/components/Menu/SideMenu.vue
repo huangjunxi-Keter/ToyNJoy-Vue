@@ -1,0 +1,71 @@
+<template>
+  <el-menu
+    active-text-color="#ffffff"
+    background-color="#001529"
+    text-color="#ffffffA6"
+    default-active="2"
+    :collapse="isCollapse"
+  >
+    <div class="logo">游戏商城管理系统</div>
+    <template v-for="menu in menus">
+      <!-- 组 -->
+      <el-sub-menu v-if="menu.children.length" :index="menu.name">
+        <template #title>
+          <component class="icon" :is="menu.meta.icon"></component>
+          <span>{{ menu.meta.title }}</span>
+        </template>
+        <el-menu-item
+          v-for="mc in menu.children"
+          :index="`${menu.name}/${mc.name}`"
+        >
+          <component class="icon" :is="mc.meta.icon"></component>
+          <template #title>{{ mc.meta.title }}</template>
+        </el-menu-item>
+      </el-sub-menu>
+
+      <!-- 按钮 -->
+      <el-menu-item v-else :index="menu.name">
+        <component class="icon" :is="menu.meta.icon"></component>
+        <template #title>{{ menu.meta.title }}</template>
+      </el-menu-item>
+    </template>
+  </el-menu>
+</template>
+
+<script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  name: "SideMenu",
+  props: ["menus"],
+  setup() {
+    const store = useStore();
+
+    const isCollapse = computed(() => store.state.system.SideMenu.isCollapse);
+
+    return { isCollapse };
+  },
+};
+</script>
+
+<style scoped>
+.logo {
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.icon {
+  height: 1.3em;
+  width: 1.3em;
+  margin-right: 0.8em;
+}
+</style>

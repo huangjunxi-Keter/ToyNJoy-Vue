@@ -381,22 +381,21 @@ export default {
     left: 25vw;
 
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 1);
-    box-shadow: 0 0 5px 5px #cccccc;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 5px 2px #ccc;
 }
 
 .title {
     height: 3vw;
     line-height: 3vw;
     color: #555555;
-    box-shadow: 0 0 0.3vw 0.02vw #858585;
-    padding-bottom: 0.5vw;
+    box-shadow: 0 0 3px 1px rgba(100, 100, 100, 0.5);
+    padding-bottom: 50px;
     padding-left: 1vw;
 }
 
 .title>span {
     font-size: 1.8vw;
-    font-weight: bold;
 }
 
 .title>label {
@@ -427,7 +426,7 @@ export default {
     width: 14.8vw;
     border: none;
     border-radius: 0.3vw;
-    box-shadow: 0 0 0.3vw 0.015vw #858585;
+    box-shadow: 0 0 2px 1px rgba(100, 100, 100, 0.5);
     margin: 1vw 0;
     outline: none;
     font-size: 0.85vw;
@@ -457,8 +456,7 @@ export default {
     font-size: 1.1vw;
     letter-spacing: 0.3vw;
     color: #eeeeee;
-    background-color: rgba(121, 153, 5, 0.8);
-    box-shadow: 0 0 0.3vw 0.01vw #808080;
+    background-color: rgba(121, 153, 5, 1);
     cursor: pointer;
 }
 
@@ -469,7 +467,7 @@ export default {
     top: 4.5vw;
     left: 27.5vw;
     border-radius: 0.2vw;
-    box-shadow: 0 0 0.3vw 0.01vw #808080;
+    box-shadow: 0 0 2px 1px rgba(100, 100, 100, 0.5);
     overflow: hidden;
     color: #656565;
     background-color: rgba(250, 250, 250, 0.5);
@@ -479,7 +477,7 @@ export default {
     /* height: 1.2vw; */
     vertical-align: middle;
     padding: 0.5vw 0.8vw;
-    box-shadow: 0 0 0.3vw 0.1vw #aaaaaa;
+    box-shadow: 0 0 2px 1px rgba(100, 100, 100, 0.5);
     font-size: 0.9vw;
 }
 

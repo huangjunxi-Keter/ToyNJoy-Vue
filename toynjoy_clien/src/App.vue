@@ -72,7 +72,8 @@ body {
 }
 
 .bodyer {
-  margin: 5vw auto 0 auto;
+  margin-top: 5vw;
+  padding: 5vw auto 0 auto;
   min-width: 1300px;
   min-height: calc(100vh - 5vw - 195px);
 }

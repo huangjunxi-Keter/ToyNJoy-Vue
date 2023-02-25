@@ -77,11 +77,11 @@ export default {
 }
 
 .content {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.5);
     width: 30vw;
     margin: auto;
     border-radius: 1vw;
-    box-shadow: 0 0 0.3vw 0.03vw rgba(100, 100, 100, 0.6);
+    box-shadow: 0 0 5px 2px rgba(100, 100, 100, 0.6);
     padding: 3vh 0;
 }
 
@@ -108,7 +108,8 @@ export default {
 .content input {
     width: 25vw;
     padding: 0 2vw;
-    background-color: rgba(180, 180, 180, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 2px 1px rgba(100, 100, 100, 0.5);
     font-size: 1.2vw;
     color: rgba(0, 0, 0, 0.65);
     transition: 0.3s;
@@ -120,8 +121,8 @@ export default {
 
 .content button {
     width: 25vw;
-    background-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0.3vw 0.03vw rgba(100, 100, 100, 0.5);
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 1px 1px rgba(100, 100, 100, 0.5);
     color: rgba(0, 0, 0, 0.65);
     font-size: 1.2vw;
     font-weight: bold;

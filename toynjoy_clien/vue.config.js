@@ -4,6 +4,7 @@ module.exports = defineConfig({
   lintOnSave: false, // 关闭语法检查
   // // 代理服务器（解决跨域）
   devServer: {
+    port: 8000,
     proxy: 'https://localhost:7046'
   }
   // devServer: {

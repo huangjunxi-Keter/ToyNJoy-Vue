@@ -4,7 +4,7 @@ const base = {
   address: "http://localhost:8001",
 };
 
-const request = ({ url, data, params, method }) => {
+export function request({ url, data, params, method }) {
   return new Promise((resolve, reject) => {
     axios({
       headers: {
@@ -23,10 +23,24 @@ const request = ({ url, data, params, method }) => {
         }
       })
       .catch((err) => {
-        // localStorage.setItem("AdminToken", "");
+        if (err.response.status === 401) {
+          localStorage.setItem("AdminToken", "");
+          window.location.href = `${base.address}/#/login`;
+          console.log(111, useRoute());
+        }
         reject(err);
       });
   });
-};
+}
 
-export default request;
+export function getImageUrl(url) {
+  return `${base.address}/api/System/file/image?name=${url}`;
+}
+
+export function getRequestHeader() {
+  return { Authorization: `Bearer ${localStorage.getItem("AdminToken")}` };
+}
+
+export function getRequestAddress() {
+  return base.address;
+}

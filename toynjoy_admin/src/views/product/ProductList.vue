@@ -1,63 +1,42 @@
 <template>
   <el-card class="page-content">
     <!-- 表头工具 -->
-    <el-form
-      ref="searchForm"
-      :model="searchFormData"
-      :rules="searchFormRules"
-      :inline="true"
-    >
-      <el-form-item prop="name">
-        <el-input v-model="searchFormData.name" placeholder="名称" />
-      </el-form-item>
-      <el-form-item prop="maxPrice">
-        <el-input
-          v-model.number="searchFormData.maxPrice"
-          placeholder="最高价格"
-        />
-      </el-form-item>
-      <el-form-item prop="minPrice">
-        <el-input
-          v-model.number="searchFormData.minPrice"
-          placeholder="最低价格"
-        />
-      </el-form-item>
-      <el-form-item prop="typeId">
-        <el-select v-model="searchFormData.typeId" placeholder="类型">
-          <el-option
-            v-for="pt in productTypes"
-            :label="pt.typeName"
-            :value="pt.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item prop="typeId">
-        <el-select v-model="searchFormData.orderby" placeholder="排序方式">
-          <el-option
-            v-for="item in productOrderKeys"
-            :label="item.name"
-            :value="item.key"
-          />
-        </el-select>
-      </el-form-item>
+    <el-row>
+      <el-form ref="searchForm" :model="searchFormData" :rules="searchFormRules" :inline="true">
+        <el-form-item prop="name">
+          <el-input v-model="searchFormData.name" placeholder="名称" />
+        </el-form-item>
+        <el-form-item prop="maxPrice">
+          <el-input v-model.number="searchFormData.maxPrice" placeholder="最高价格" />
+        </el-form-item>
+        <el-form-item prop="minPrice">
+          <el-input v-model.number="searchFormData.minPrice" placeholder="最低价格" />
+        </el-form-item>
+        <el-form-item prop="typeId">
+          <el-select v-model="searchFormData.typeId" placeholder="类型">
+            <el-option v-for="pt in productTypes" :label="pt.typeName" :value="pt.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="typeId">
+          <el-select v-model="searchFormData.orderby" placeholder="排序方式">
+            <el-option v-for="item in productOrderKeys" :label="item.name" :value="item.key" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="searchFormSubmit(searchForm)">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-tooltip content="刷新" placement="top">
+            <el-button icon="Refresh" @click="searchFormReset(searchForm)" />
+          </el-tooltip>
+        </el-form-item>
+      </el-form>
+    </el-row>
+    <el-row>
       <el-form-item>
-        <el-tooltip content="搜索" placement="top">
-          <el-button
-            type="primary"
-            icon="Search"
-            @click="searchFormSubmit(searchForm)"
-          ></el-button>
-        </el-tooltip>
+        <el-button type="primary" icon="Plus" @click="openDialog(false)">新增</el-button>
       </el-form-item>
-      <el-form-item>
-        <el-tooltip content="刷新" placement="top">
-          <el-button
-            icon="Refresh"
-            @click="searchFormReset(searchForm)"
-          ></el-button>
-        </el-tooltip>
-      </el-form-item>
-    </el-form>
+    </el-row>
 
     <!-- 表格 -->
     <el-table v-loading="other.loading" :data="productArray" highlight-current-row>
@@ -69,50 +48,41 @@
       <el-table-column prop="purchases" label="销量" />
       <el-table-column fixed="right" label="操作" width="130">
         <template #default="scope">
-          <el-button
-            type="primary"
-            icon="InfoFilled"
-            @click="other.editDialogVisible = true"
-          />
-          <el-button type="danger" icon="Delete" />
+          <el-button type="primary" icon="InfoFilled" @click="openDialog(true, scope)" />
+          <el-button type="danger" icon="Lock" />
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页 -->
     <div class="pagination">
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="pagination.total"
-        :page-size="pagination.pageSize"
-        :current-page="pagination.currentPage"
-        @update:current-page="changePage"
-      />
+      <el-pagination background layout="prev, pager, next" :total="pagination.total" :page-size="pagination.pageSize"
+        :current-page="pagination.currentPage" @update:current-page="changePage" />
     </div>
-    <!-- 详情 -->
-    <el-dialog
-      class="info-dialog"
-      v-model="other.editDialogVisible"
-      title="详情"
-      align-center
-      draggable
-    >
-      <ProductInfo />
+    <!-- 弹出框 -->
+    <el-dialog class="info-dialog" v-model="other.editDialogVisible" :title="other.dialogTitle" align-center draggable
+      destroy-on-close :before-close="dialogBeforeClose">
+      <ProductInfo v-if="other.isInfo" />
+      <ProductEdit v-else />
     </el-dialog>
   </el-card>
 </template>
 
 <script>
 import { reactive, ref, onMounted } from "vue";
+import { useStore } from 'vuex';
 import { getProductsCount, getProducts, getProductTypes } from "@/api/product";
 import ProductInfo from "@/components/product/ProductInfo.vue";
+import ProductEdit from "@/components/product/ProductEdit.vue";
 
 export default {
   name: "ProductList",
   components: {
     ProductInfo,
+    ProductEdit
   },
   setup() {
+    const store = useStore();
+
     // 绑定数据
     const data = reactive({
       productOrderKeys: [
@@ -145,6 +115,8 @@ export default {
       other: {
         editDialogVisible: false,
         loading: false,
+        isInfo: false,
+        dialogTitle: ''
       },
     });
 
@@ -185,6 +157,17 @@ export default {
         formRef.resetFields();
         eventCallbacks.searchFormSubmit(doms.searchForm.value);
       },
+      // 打开详情
+      openDialog(isInfo, rowScope) {
+        data.other.isInfo = isInfo;
+        data.other.dialogTitle = isInfo ? '详情' : '创建一个商品';
+        store.commit('product/SET_PRODUCT_DATA', rowScope ? rowScope.row : null);
+        data.other.editDialogVisible = true;
+      },
+      dialogBeforeClose(done) {
+        eventCallbacks.searchFormSubmit(doms.searchForm.value);
+        done();
+      }
     };
 
     //#region 表格数据格式化
@@ -231,11 +214,6 @@ export default {
 </script>
 
 <style scoped>
-.page-content {
-  border: 0;
-  min-height: 100%;
-}
-
 .pagination {
   padding-top: 20px;
 }

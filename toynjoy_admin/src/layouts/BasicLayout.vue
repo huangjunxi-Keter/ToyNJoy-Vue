@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container v-loading="other.isloading">
     <!-- 左侧菜单 -->
     <el-aside class="aside-content">
       <SideMenu class="side-menu" :menus="menus" />
@@ -29,11 +29,11 @@
         </div>
       </el-header>
       <!-- 面包屑导航 -->
-      <el-breadcrumb class="breadcrumb-navigation" separator=">">
+      <!-- <el-breadcrumb class="breadcrumb-navigation" separator=">">
         <el-breadcrumb-item v-for="cr in currentRoute">
           {{ cr.meta.title }}
         </el-breadcrumb-item>
-      </el-breadcrumb>
+      </el-breadcrumb> -->
       <!-- 内容 -->
       <el-main class="main-content">
         <RouterView />
@@ -71,6 +71,9 @@ export default {
       computed: {
         user: computed(() => store.state.user.userData),
       },
+      other: {
+        isloading: true
+      }
     });
 
     // 事件回调
@@ -95,6 +98,7 @@ export default {
     onMounted(() => {
       // 刷新当前用户数据
       store.dispatch("user/renovate_user");
+      data.other.isloading = false;
     });
 
     return {

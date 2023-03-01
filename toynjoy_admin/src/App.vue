@@ -15,4 +15,9 @@ export default {
   border: 0;
   outline: 0 !important;
 }
+
+.page-content {
+  border: 0;
+  min-height: 100%;
+}
 </style>

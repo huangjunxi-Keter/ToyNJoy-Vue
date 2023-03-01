@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import { request } from "@/utils/request";
 
 const userApi = {
   login: "/api/Administrator/login",

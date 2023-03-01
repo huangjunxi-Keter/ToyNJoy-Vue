@@ -58,7 +58,7 @@ export default {
     mounted() {
         //#region 初始化分页数据
         this.myAxios({
-            url: 'product/count',
+            url: 'product/findCount',
             success: (response) => {
                 this.page.dataTotal = response.data;
                 this.page.pageTotal = Math.ceil(this.page.dataTotal / this.page.pageItem);

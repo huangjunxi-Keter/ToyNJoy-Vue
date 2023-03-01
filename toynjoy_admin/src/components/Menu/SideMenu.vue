@@ -1,30 +1,22 @@
 <template>
-  <el-menu
-    active-text-color="#ffffff"
-    background-color="#001529"
-    text-color="#ffffffA6"
-    default-active="2"
-    :collapse="isCollapse"
-  >
+  <el-menu active-text-color="#ffffff" background-color="#001529" text-color="#ffffffA6" default-active="2"
+    :collapse="computeds.isCollapse" router>
     <div class="logo">游戏商城管理系统</div>
     <template v-for="menu in menus">
       <!-- 组 -->
-      <el-sub-menu v-if="menu.children.length" :index="menu.name">
+      <el-sub-menu :index="`/${menu.path}`" v-if="menu.children">
         <template #title>
           <component class="icon" :is="menu.meta.icon"></component>
           <span>{{ menu.meta.title }}</span>
         </template>
-        <el-menu-item
-          v-for="mc in menu.children"
-          :index="`${menu.name}/${mc.name}`"
-        >
+        <el-menu-item v-for="mc in menu.children" :index="`/${menu.path}/${mc.path}`">
           <component class="icon" :is="mc.meta.icon"></component>
           <template #title>{{ mc.meta.title }}</template>
         </el-menu-item>
       </el-sub-menu>
 
       <!-- 按钮 -->
-      <el-menu-item v-else :index="menu.name">
+      <el-menu-item v-else :index="`/${menu.path}`">
         <component class="icon" :is="menu.meta.icon"></component>
         <template #title>{{ menu.meta.title }}</template>
       </el-menu-item>
@@ -33,7 +25,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -42,9 +34,19 @@ export default {
   setup() {
     const store = useStore();
 
-    const isCollapse = computed(() => store.state.system.SideMenu.isCollapse);
+    // 数据绑定
+    const data = reactive({
+      computeds: {
+        isCollapse: computed(() => store.state.system.SideMenu.isCollapse)
+      }
+    });
 
-    return { isCollapse };
+    // 
+    const eventCallbacks = {
+
+    };
+
+    return { ...data, ...eventCallbacks };
   },
 };
 </script>

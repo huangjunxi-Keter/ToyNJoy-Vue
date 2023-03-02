@@ -52,7 +52,7 @@
       </el-col>
       <el-col :span="8">
         <el-form-item label="发行时间" label-width="80" prop="releaseDate">
-          <el-date-picker v-model="productFormData.releaseDate" type="date" placeholder="选择日期" :size="size" />
+          <el-date-picker v-model="productFormData.releaseDate" type="date" placeholder="选择日期" />
         </el-form-item>
       </el-col>
     </el-row>
@@ -173,6 +173,7 @@ export default {
       },
     };
 
+    // 表单赋值
     const renewProductFormDataByStore = () => {
       let product = store.state.product.productData;
       if (product) {

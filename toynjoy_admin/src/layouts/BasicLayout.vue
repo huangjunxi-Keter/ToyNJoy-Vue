@@ -69,7 +69,7 @@ export default {
       ),
       // 计算属性
       computed: {
-        user: computed(() => store.state.user.userData),
+        user: computed(() => store.state.user.loginUser),
       },
       other: {
         isloading: true

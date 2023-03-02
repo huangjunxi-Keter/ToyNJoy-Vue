@@ -16,98 +16,98 @@ const productApi = {
   delPhotoGallery: "/api/ProductPhotoGallery/del",
 };
 
-export async function getProductsCount(params) {
-  return await request({
+export function getProductsCount(params) {
+  return request({
     url: productApi.findCount,
     params,
   });
 }
 
-export async function getProducts(params) {
-  return await request({
+export function getProducts(params) {
+  return request({
     url: productApi.products,
     params,
   });
 }
 
-export async function createProduct(product) {
-  return await request({
+export function createProduct(product) {
+  return request({
     method: "post",
     url: productApi.create,
     data: product,
   });
 }
 
-export async function updateProduct(product) {
-  return await request({
+export function updateProduct(product) {
+  return request({
     method: "post",
     url: productApi.update,
     data: product,
   });
 }
 
-export async function getTypeCount(params) {
-  return await request({
+export function getTypeCount(params) {
+  return request({
     url: productApi.typeCount,
     params,
   });
 }
 
-export async function getProductTypes(params) {
-  return await request({
+export function getProductTypes(params) {
+  return request({
     url: productApi.types,
     params,
   });
 }
 
-export async function createProductType(data) {
-  return await request({
+export function createProductType(data) {
+  return request({
     method: "post",
     url: productApi.createType,
     data,
   });
 }
 
-export async function updateProductType(data) {
-  return await request({
+export function updateProductType(data) {
+  return request({
     method: "post",
     url: productApi.updateType,
     data,
   });
 }
 
-export async function getHardwareRequirement(id) {
-  return await request({
+export function deleteType(id) {
+  return request({
+    url: productApi.deleteType,
+    params: { id },
+  });
+}
+
+export function getHardwareRequirement(id) {
+  return request({
     url: productApi.hardwareRequirement,
     params: { id },
   });
 }
 
-export async function updateHardwareRequirement(hardwareRequirement) {
-  return await request({
+export function updateHardwareRequirement(hardwareRequirement) {
+  return request({
     method: "post",
     url: productApi.updateHardwareRequirement,
     data: hardwareRequirement,
   });
 }
 
-export async function getPhotoGallery(id) {
-  return await request({
+export function getPhotoGallery(id) {
+  return request({
     url: productApi.photoGallery,
     params: { id },
   });
 }
 
-export async function delgetPhotoGallery(productId, image) {
-  return await request({
+export function delgetPhotoGallery(productId, image) {
+  return request({
     url: productApi.delPhotoGallery,
     params: { productId, image },
-  });
-}
-
-export async function deleteType(id) {
-  return await request({
-    url: productApi.deleteType,
-    params: { id },
   });
 }

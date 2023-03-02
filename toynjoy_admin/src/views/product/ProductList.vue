@@ -48,7 +48,7 @@
       <el-table-column prop="purchases" label="销量" />
       <el-table-column fixed="right" label="操作" width="130">
         <template #default="scope">
-          <el-button type="primary" icon="InfoFilled" @click="openDialog(true, scope)" />
+          <el-button type="primary" icon="EditPen" @click="openDialog(true, scope)" />
           <el-button type="danger" icon="Lock" />
         </template>
       </el-table-column>
@@ -134,10 +134,10 @@ export default {
       },
       // 搜索
       searchFormSubmit: (formRef) => {
-        data.other.loading = true;
         // 表单验证
         formRef.validate(async (valid) => {
           if (valid) {
+            data.other.loading = true;
             let params = {
               ...data.searchFormData,
               page: data.pagination.currentPage - 1,

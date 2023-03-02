@@ -1,4 +1,5 @@
 import { login, getUserData } from "@/api/user";
+import { cloneObj } from '@/utils/basic'
 
 export default {
   namespaced: true,
@@ -22,10 +23,14 @@ export default {
   },
   mutations: {
     SET_USER: (state, userData) => {
-      state.userData = userData;
+      state.loginUser = userData;
     },
+    SET_EDIT_USER: (state, userData) => {
+      state.editUser = cloneObj(userData);
+    }
   },
   state: {
-    userData: {},
+    loginUser: {},
+    editUser: null
   },
 };

@@ -28,12 +28,21 @@ export default createRouter({
           },
           children: [
             {
-              name: "user",
+              name: "userList",
               path: "list",
               component: () => import("@/views/user/UserList"),
               meta: {
                 icon: "List",
                 title: "用户列表",
+              },
+            },
+            {
+              name: "userTypeList",
+              path: "type/list",
+              component: () => import("@/views/user/UserTypeList"),
+              meta: {
+                icon: "List",
+                title: "用户类型",
               },
             },
           ],
@@ -58,7 +67,7 @@ export default createRouter({
               },
             },
             {
-              name: "typeList",
+              name: "productTypeList",
               path: "type/list",
               component: () => import("@/views/product/ProductTypeList"),
               meta: {

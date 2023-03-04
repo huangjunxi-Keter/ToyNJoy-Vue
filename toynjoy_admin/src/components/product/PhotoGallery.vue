@@ -2,10 +2,20 @@
     <el-divider v-loading="other.isloading" content-position="left">封面</el-divider>
     <el-upload ref="productImage" list-type="picture-card" :action="`${getRequestAddress()}/api/product/updateImage`"
         method="post" :headers="getRequestHeader()" :name="upload.productId" :accept="upload.accept" :limit="1"
-        :file-list="coverFileList" :on-preview="handlePictureCardPreview" :on-exceed="handleExceed">
+        :file-list="coverFileList" :on-exceed="handleExceed">
         <el-icon>
             <Plus />
         </el-icon>
+        <template #file="{ file }">
+            <div>
+                <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+                <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                        <el-icon><zoom-in /></el-icon>
+                    </span>
+                </span>
+            </div>
+        </template>
     </el-upload>
     <el-divider content-position="left">图集</el-divider>
     <el-upload ref="photoGallery" list-type="picture-card" :action="`${getRequestAddress()}/api/ProductPhotoGallery/add`"
@@ -73,14 +83,14 @@ export default {
                 doms.productImage.value.submit();
             },
             handleSuccess(response, image, fileList) {
-                fileList[fileList.length-1].url = getImageUrl(`photoGallery/${response}`);
+                fileList[fileList.length - 1].url = getImageUrl(`photoGallery/${response}`);
                 console.log(fileList);
                 console.log(data.photoGalleryFileList);
             },
             handleRemove(image, fileList) {
                 let imageUrl = image.url;
                 let imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.length);
-                delgetPhotoGallery(data.upload.productId ,imageName);
+                delgetPhotoGallery(data.upload.productId, imageName);
             }
         }
 

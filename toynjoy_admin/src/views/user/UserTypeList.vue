@@ -15,8 +15,6 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="searchFormSubmit()">查询</el-button>
-                </el-form-item>
-                <el-form-item>
                     <el-tooltip content="刷新" placement="top">
                         <el-button icon="Refresh" @click="searchFormReset()" />
                     </el-tooltip>
@@ -221,8 +219,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.pagination {
-    padding-top: 20px;
-}
-</style>
+<style scoped></style>

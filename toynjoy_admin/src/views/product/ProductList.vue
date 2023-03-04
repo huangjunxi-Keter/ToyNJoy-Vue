@@ -17,15 +17,13 @@
             <el-option v-for="pt in productTypes" :label="pt.typeName" :value="pt.id" />
           </el-select>
         </el-form-item>
-        <el-form-item prop="typeId">
+        <el-form-item prop="orderby">
           <el-select v-model="searchFormData.orderby" placeholder="排序方式">
             <el-option v-for="item in productOrderKeys" :label="item.name" :value="item.key" />
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="searchFormSubmit(searchForm)">查询</el-button>
-        </el-form-item>
-        <el-form-item>
           <el-tooltip content="刷新" placement="top">
             <el-button icon="Refresh" @click="searchFormReset(searchForm)" />
           </el-tooltip>
@@ -170,7 +168,7 @@ export default {
       }
     };
 
-    //#region 表格数据格式化
+    // 表格数据格式化
     const tableFormatter = {
       productType: (row, column, cellValue, index) => {
         let result = "";
@@ -189,13 +187,12 @@ export default {
       },
       discountStr: (row, column, cellValue, index) => {
         let result = "无";
-        if (cellValue * 100 > 100) {
-          result = `${cellValue * 100}%`;
+        if (cellValue < 1) {
+          result = `${cellValue * 10}折`;
         }
         return result;
       },
     };
-    //#endregion
 
     onMounted(async () => {
       eventCallbacks.searchFormSubmit(doms.searchForm.value);
@@ -214,10 +211,6 @@ export default {
 </script>
 
 <style scoped>
-.pagination {
-  padding-top: 20px;
-}
-
 .info-dialog {
   width: 10000px;
   max-width: 10000px;

@@ -9,17 +9,17 @@
         :model="loginFormData"
         :rules="loginFormRules"
       >
-        <el-form-item prop="saname">
+        <el-form-item prop="username">
           <el-input
-            v-model="loginFormData.saname"
+            v-model="loginFormData.username"
             size="large"
             prefix-icon="User"
           />
         </el-form-item>
-        <el-form-item prop="sapassword">
+        <el-form-item prop="password">
           <el-input
             type="password"
-            v-model="loginFormData.sapassword"
+            v-model="loginFormData.password"
             size="large"
             prefix-icon="Unlock"
           />
@@ -65,13 +65,14 @@ export default {
     const data = reactive({
       // 表单数据
       loginFormData: {
-        saname: "123",
-        sapassword: "123",
+        username: "",
+        password: "",
+        typeId: 1
       },
       // 表单验证规则
       loginFormRules: {
-        saname: [{ required: true, message: "请输入账号" }],
-        sapassword: [{ required: true, message: "请输入密码" }],
+        username: [{ required: true, message: "请输入账号" }],
+        password: [{ required: true, message: "请输入密码" }],
       },
       other: {
         butState: false,

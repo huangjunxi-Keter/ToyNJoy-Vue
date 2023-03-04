@@ -4,21 +4,23 @@
     <div class="logo">游戏商城管理系统</div>
     <template v-for="menu in menus">
       <!-- 组 -->
-      <el-sub-menu :index="`/${menu.path}`" v-if="menu.children">
+      <el-sub-menu :index="`/${menu.path}`" v-if="menu.children.length > 1">
+        <!-- 标题 -->
         <template #title>
           <component class="icon" :is="menu.meta.icon"></component>
           <span>{{ menu.meta.title }}</span>
         </template>
-        <el-menu-item v-for="mc in menu.children" :index="`/${menu.path}/${mc.path}`">
-          <component class="icon" :is="mc.meta.icon"></component>
-          <template #title>{{ mc.meta.title }}</template>
+        <!-- 按钮 -->
+        <el-menu-item v-for="children in menu.children" :index="`/${menu.path}/${children.path}`">
+          <component class="icon" :is="children.meta.icon"></component>
+          <template #title>{{ children.meta.title }}</template>
         </el-menu-item>
       </el-sub-menu>
 
       <!-- 按钮 -->
-      <el-menu-item v-else :index="`/${menu.path}`">
+      <el-menu-item v-else :index="`/${menu.path}/${menu.children[0].path}`">
         <component class="icon" :is="menu.meta.icon"></component>
-        <template #title>{{ menu.meta.title }}</template>
+        <template #title>{{ menu.children[0].meta.title }}</template>
       </el-menu-item>
     </template>
   </el-menu>

@@ -1,12 +1,24 @@
 import { request } from "@/utils/request";
 
 const api = {
-  email: "/api/System/getVerificationCode",
+  verificationCode: "/api/System/getVerificationCode",
+  email: "/api/System/sendEmail",
 };
 
 export function getVerificationCode(email, title) {
   return request({
-    url: api.email,
+    url: api.verificationCode,
     params: { email, title },
+  });
+}
+
+export function sendEmail(email, title, message) {
+  return request({
+    url: api.email,
+    params: {
+      email,
+      title,
+      message,
+    },
   });
 }

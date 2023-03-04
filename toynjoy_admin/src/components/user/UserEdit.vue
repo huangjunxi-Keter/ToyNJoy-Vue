@@ -43,7 +43,7 @@
                 </el-form-item>
             </el-col>
             <el-col :span="8">
-                <el-form-item label="用户类型" label-width="80" prop="typeId">
+                <el-form-item label="用户类型" label-width="90" prop="typeId">
                     <el-select v-model="userFormData.typeId">
                         <el-option v-for="ut in userTypes" :label="ut.typeName" :value="ut.id" />
                     </el-select>
@@ -135,7 +135,7 @@ import { useStore } from 'vuex'
 import { getUserTypes, getInfoByName, updateUser, updateUserInfo } from '@/api/user'
 import { getVerificationCode } from '@/api/system'
 import { getImageUrl } from '@/utils/request'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
     name: 'UserEdit',
@@ -259,20 +259,27 @@ export default {
                 let userInfoValid = await doms.userInfoForm.value.validate((valid) => valid);
 
                 if (userValid && userInfoValid) {
-                    data.other.isloading = true;
-                    let userReponse = await updateUser(data.userFormData);
-                    let userInfoReponse = await updateUserInfo(data.userInfoFormData);
+                    if (store.state.user.loginUser.id != data.userFormData.id || data.userFormData.typeId === 1) {
+                        data.other.isloading = true;
+                        let userReponse = await updateUser(data.userFormData);
+                        let userInfoReponse = await updateUserInfo(data.userInfoFormData);
 
-                    if (!userReponse) {
-                        ElMessage.error("基本信息更新失败");
+                        if (!userReponse) {
+                            ElMessage.error("基本信息更新失败");
+                        }
+                        if (!userInfoReponse) {
+                            ElMessage.error("详细信息更新失败");
+                        }
+                        if (userReponse && userInfoReponse) {
+                            ElMessage.success("更新成功");
+                        }
+                        data.other.isloading = false;
+                    } else {
+                        ElMessageBox.alert('为保证至少存在一名【管理员】\n暂不支持修改当前登录用户的类型', '警告', {
+                            confirmButtonText: 'OK',
+                            type: 'warning',
+                        });
                     }
-                    if (!userInfoReponse) {
-                        ElMessage.error("详细信息更新失败");
-                    }
-                    if (userReponse && userInfoReponse) {
-                        ElMessage.success("更新成功");
-                    }
-                    data.other.isloading = false;
                 }
             },
             // 清空表单

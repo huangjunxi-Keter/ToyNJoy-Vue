@@ -30,8 +30,6 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="searchFormSubmit(searchForm)">查询</el-button>
-                </el-form-item>
-                <el-form-item>
                     <el-tooltip content="刷新" placement="top">
                         <el-button icon="Refresh" @click="searchFormReset(searchForm)" />
                     </el-tooltip>
@@ -61,7 +59,7 @@
         </div>
         <!-- 弹出框 -->
         <el-dialog class="info-dialog" v-model="other.editDialogVisible" width="835px" align-center draggable
-            destroy-on-close>
+            destroy-on-close :before-close="dialogBeforeClose">
             <UserEdit />
         </el-dialog>
     </el-card>
@@ -136,6 +134,10 @@ export default {
             openDialog(scope) {
                 store.commit("user/SET_EDIT_USER", scope.row);
                 data.other.editDialogVisible = true;
+            },
+            dialogBeforeClose(done) {
+                eventCallbacks.searchFormSubmit(doms.searchForm.value);
+                done();
             }
         }
 
@@ -168,8 +170,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.pagination {
-    padding-top: 20px;
-}
-</style>
+<style scoped></style>

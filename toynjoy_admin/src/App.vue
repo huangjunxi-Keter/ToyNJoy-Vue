@@ -20,4 +20,8 @@ export default {
   border: 0;
   min-height: 100%;
 }
+
+.pagination {
+  padding-top: 20px;
+}
 </style>

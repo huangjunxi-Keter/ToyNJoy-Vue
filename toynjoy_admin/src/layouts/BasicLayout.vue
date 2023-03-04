@@ -11,12 +11,12 @@
           <!-- 头像 -->
           <el-avatar :size="30">
             {{
-              computed.user.saName ? computed.user.saName[0].toUpperCase() : ""
+              computed.user.username ? computed.user.username[0].toUpperCase() : ""
             }}
           </el-avatar>
           <!-- 下拉菜单 -->
           <el-dropdown>
-            <span class="user-name">{{ computed.user.saName }}</span>
+            <span class="user-name">{{ computed.user.username }}</span>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item icon="Setting">个人设置</el-dropdown-item>

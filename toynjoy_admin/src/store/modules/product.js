@@ -10,7 +10,6 @@ export default {
         productEntity = await createProduct(product);
       } else if (editType === "update") {
         if (await updateProduct(product)) {
-          console.log(product);
           productEntity = product;
         }
       }
@@ -24,8 +23,8 @@ export default {
   mutations: {
     SET_PRODUCT_DATA: (state, productData) => {
       state.productData = cloneObj(productData);
-      if (state.productData) {
-        state.productData.discount *= 100;
+      if (state.productData && state.productData.discount <= 1) {
+        state.productData.discount *= 10;
       }
     },
   },

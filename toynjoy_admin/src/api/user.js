@@ -1,13 +1,14 @@
 import { request } from "@/utils/request";
 
 const userApi = {
-  login: "/api/Administrator/login",
-  userData: "/api/Administrator/get",
+  login: "/api/User/login",
+  loginUser: "/api/User/get",
   findCount: "/api/User/findCount",
   users: "/api/User/find",
   update: "/api/User/upd",
   info: "/api/User/getInfoByName",
   updateInfo: "/api/User/updInfo",
+  userData: "/api/User/getByName",
   typeCount: "/api/UserType/findCount",
   types: "/api/UserType/find",
   createType: "/api/UserType/add",
@@ -23,9 +24,9 @@ export function login(params) {
   });
 }
 
-export function getUserData() {
+export function getLoginUser() {
   return request({
-    url: userApi.userData,
+    url: userApi.loginUser,
   });
 }
 
@@ -62,6 +63,15 @@ export function updateUserInfo(data) {
 export function getInfoByName(username) {
   return request({
     url: userApi.info,
+    params: {
+      name: username,
+    },
+  });
+}
+
+export function getUserData(username) {
+  return request({
+    url: userApi.userData,
     params: {
       name: username,
     },

@@ -29,7 +29,7 @@
       </el-col>
       <el-col :span="6">
         <el-form-item label="折扣" prop="discount">
-          <el-input-number v-model.number="productFormData.discount" :min="0" :max="100" controls-position="right"
+          <el-input-number v-model.number="productFormData.discount" :min="0" :max="10" controls-position="right"
             @change="handleChange" />
         </el-form-item>
       </el-col>

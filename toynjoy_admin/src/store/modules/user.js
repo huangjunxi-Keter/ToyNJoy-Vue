@@ -1,4 +1,4 @@
-import { login, getUserData } from "@/api/user";
+import { login, getLoginUser } from "@/api/user";
 import { cloneObj } from '@/utils/basic'
 
 export default {
@@ -17,7 +17,7 @@ export default {
       commit("SET_USER", {});
     },
     renovate_user: async ({ commit }) => {
-      let userData = await getUserData();
+      let userData = await getLoginUser();
       commit("SET_USER", userData);
     },
   },

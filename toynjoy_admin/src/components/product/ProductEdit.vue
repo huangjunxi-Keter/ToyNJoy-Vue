@@ -36,7 +36,8 @@
     </el-row>
     <!-- 第三行 -->
     <el-form-item label="介绍" prop="intro">
-      <el-input v-model="productFormData.intro" :autosize="{ minRows: 4, maxRows: 10 }" type="textarea" placeholder="请填写商品描述" />
+      <el-input v-model="productFormData.intro" :autosize="{ minRows: 4, maxRows: 10 }" type="textarea"
+        placeholder="请填写商品描述" />
     </el-form-item>
     <!-- 第四行 -->
     <el-row>
@@ -79,10 +80,12 @@ export default {
   name: "ProductEdit",
   setup() {
     const store = useStore();
+    
     // 自定义表单验证规则
     const checkStr = (rule, value, callback) => {
       return !(value.trim() == "");
     };
+
     // 绑定数据
     const data = reactive({
       productFormData: {
@@ -167,9 +170,7 @@ export default {
         });
       },
       productFormReset(formRef) {
-        let id = data.productFormData.id;
         formRef.resetFields();
-        data.productFormData.id = id;
       },
     };
 
@@ -186,7 +187,7 @@ export default {
     onMounted(async () => {
       data.other.loading = true;
       // state：1 被启用的分类
-      data.productTypes.push(...(await getProductTypes({state: 1})));
+      data.productTypes.push(...(await getProductTypes({ state: 1 })));
       renewProductFormDataByStore();
       data.other.loading = false;
     });

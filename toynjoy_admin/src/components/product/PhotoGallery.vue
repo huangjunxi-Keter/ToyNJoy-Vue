@@ -36,7 +36,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { genFileId } from 'element-plus';
 import { getImageUrl, getRequestHeader, getRequestAddress } from '@/utils/request';
-import { getPhotoGallery, delgetPhotoGallery } from '@/api/product';
+import { getPhotoGallery, delPhotoGallery } from '@/api/product';
 
 export default {
     name: 'PhotoGallery',
@@ -84,13 +84,11 @@ export default {
             },
             handleSuccess(response, image, fileList) {
                 fileList[fileList.length - 1].url = getImageUrl(`photoGallery/${response}`);
-                console.log(fileList);
-                console.log(data.photoGalleryFileList);
             },
             handleRemove(image, fileList) {
                 let imageUrl = image.url;
                 let imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.length);
-                delgetPhotoGallery(data.upload.productId, imageName);
+                delPhotoGallery(data.upload.productId, imageName);
             }
         }
 

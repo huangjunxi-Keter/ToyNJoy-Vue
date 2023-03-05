@@ -105,7 +105,7 @@ export function getPhotoGallery(id) {
   });
 }
 
-export function delgetPhotoGallery(productId, image) {
+export function delPhotoGallery(productId, image) {
   return request({
     url: productApi.delPhotoGallery,
     params: { productId, image },

@@ -2,7 +2,7 @@
     <el-divider v-loading="other.isloading" content-position="left">封面</el-divider>
     <el-upload ref="productImage" list-type="picture-card" :action="`${getRequestAddress()}/api/product/updateImage`"
         method="post" :headers="getRequestHeader()" :name="upload.productId" :accept="upload.accept" :limit="1"
-        :file-list="coverFileList" :on-exceed="handleExceed">
+        :file-list="coverFileList" :on-exceed="handleExceed" :before-upload="beforeUpload">
         <el-icon>
             <Plus />
         </el-icon>
@@ -21,7 +21,7 @@
     <el-upload ref="photoGallery" list-type="picture-card" :action="`${getRequestAddress()}/api/ProductPhotoGallery/add`"
         method="post" :headers="getRequestHeader()" :name="upload.productId" :accept="upload.accept"
         :file-list="photoGalleryFileList" :on-preview="handlePictureCardPreview" :on-success="handleSuccess"
-        :on-remove="handleRemove">
+        :before-upload="beforeUpload" :on-remove="handleRemove">
         <el-icon>
             <Plus />
         </el-icon>
@@ -75,12 +75,23 @@ export default {
             },
             // upload 超出文件数量限制时触发
             handleExceed(files) {
-                doms.productImage.value.clearFiles();
                 const file = files[0];
                 file.uid = genFileId();
+                doms.productImage.value.clearFiles();
                 doms.productImage.value.handleStart(file);
                 // 提交（上传图片）
                 doms.productImage.value.submit();
+            },
+            beforeUpload(file) {
+                let result = true;
+                if (file.type.indexOf("image/") < 0) {
+                    result = false;
+                    ElMessage.error("文件类型不正确");
+                } else if (file.size / 1024 / 1024 > 15) {
+                    result = false;
+                    ElMessage.error("文件不能大于15MB");
+                }
+                return result;
             },
             handleSuccess(response, image, fileList) {
                 fileList[fileList.length - 1].url = getImageUrl(`photoGallery/${response}`);

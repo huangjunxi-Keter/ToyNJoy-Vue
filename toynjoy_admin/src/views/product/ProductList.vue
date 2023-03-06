@@ -17,6 +17,13 @@
             <el-option v-for="pt in productTypes" :label="pt.typeName" :value="pt.id" />
           </el-select>
         </el-form-item>
+        <el-form-item>
+          <el-select v-model="searchFormData.state" placeholder="状态">
+            <el-option label="全部状态" :value="null" />
+            <el-option label="禁用" :value="0" />
+            <el-option label="启用" :value="1" />
+          </el-select>
+        </el-form-item>
         <el-form-item prop="orderby">
           <el-select v-model="searchFormData.orderby" placeholder="排序方式">
             <el-option v-for="item in productOrderKeys" :label="item.name" :value="item.key" />
@@ -44,10 +51,12 @@
       <el-table-column prop="discount" label="折扣" :formatter="discountStr" />
       <el-table-column prop="browse" label="浏览量" />
       <el-table-column prop="purchases" label="销量" />
+      <el-table-column prop="state" label="状态" :formatter="stateStr" />
       <el-table-column fixed="right" label="操作" width="130">
         <template #default="scope">
           <el-button type="primary" icon="EditPen" @click="openDialog(true, scope)" />
-          <el-button type="danger" icon="Lock" />
+          <el-button v-if="scope.row.state === 1" type="danger" icon="Lock" @click="changeState(scope, 0)" />
+          <el-button v-else type="success" icon="Unlock" @click="changeState(scope, 1)" />
         </template>
       </el-table-column>
     </el-table>
@@ -68,7 +77,9 @@
 <script>
 import { reactive, ref, onMounted } from "vue";
 import { useStore } from 'vuex';
-import { getProductsCount, getProducts, getProductTypes } from "@/api/product";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { getProductsCount, getProducts, getProductTypes, updateProduct } from "@/api/product";
+import { cloneObj } from "@/utils/basic";
 import ProductInfo from "@/components/product/ProductInfo.vue";
 import ProductEdit from "@/components/product/ProductEdit.vue";
 
@@ -104,6 +115,7 @@ export default {
         maxPrice: null,
         minPrice: null,
         typeId: null,
+        state: null,
         orderby: null,
       },
       searchFormRules: {
@@ -165,6 +177,21 @@ export default {
       dialogBeforeClose(done) {
         eventCallbacks.searchFormSubmit(doms.searchForm.value);
         done();
+      },
+      async changeState(scope, state) {
+        if (!!scope.row.fileName || state === 0) {
+          let data = cloneObj(scope.row);
+          data.state = state;
+          if (await updateProduct(data))
+            eventCallbacks.searchFormSubmit(doms.searchForm.value);
+          else
+            ElMessage.error("更新失败");
+        } else {
+          ElMessageBox.alert('该商品还未上传文件', '警告', {
+            confirmButtonText: 'OK',
+            type: 'warning',
+          });
+        }
       }
     };
 
@@ -192,12 +219,15 @@ export default {
         }
         return result;
       },
+      stateStr: (row, column, cellValue, index) => {
+        return cellValue === 1 ? "启用" : "禁用";
+      }
     };
 
     onMounted(async () => {
       eventCallbacks.searchFormSubmit(doms.searchForm.value);
       data.productTypes.push(...(await getProductTypes()));
-      data.productTypes.unshift({ typeName: "全部", id: null });
+      data.productTypes.unshift({ typeName: "全部类型", id: null });
     });
 
     return {

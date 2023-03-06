@@ -1,5 +1,5 @@
 <template>
-  <el-menu active-text-color="#ffffff" background-color="#001529" text-color="#ffffffA6" default-active="2"
+  <el-menu active-text-color="#ffffff" background-color="#001529" text-color="#ffffffA5" default-active="2"
     :collapse="computeds.isCollapse" router>
     <div class="logo">游戏商城管理系统</div>
     <template v-for="menu in menus">
@@ -11,7 +11,7 @@
           <span>{{ menu.meta.title }}</span>
         </template>
         <!-- 按钮 -->
-        <el-menu-item v-for="children in menu.children" :index="`/${menu.path}/${children.path}`">
+        <el-menu-item class="menu-item" v-for="children in menu.children" :index="`/${menu.path}/${children.path}`">
           <component class="icon" :is="children.meta.icon"></component>
           <template #title>{{ children.meta.title }}</template>
         </el-menu-item>
@@ -71,5 +71,9 @@ export default {
   height: 1.3em;
   width: 1.3em;
   margin-right: 0.8em;
+}
+
+.menu-item {
+  background-color: #000c17;
 }
 </style>

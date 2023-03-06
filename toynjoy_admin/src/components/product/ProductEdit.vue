@@ -80,7 +80,7 @@ export default {
   name: "ProductEdit",
   setup() {
     const store = useStore();
-    
+
     // 自定义表单验证规则
     const checkStr = (rule, value, callback) => {
       return !(value.trim() == "");
@@ -89,7 +89,6 @@ export default {
     // 绑定数据
     const data = reactive({
       productFormData: {
-        id: null,
         name: null,
         typeId: null,
         price: 0,
@@ -99,6 +98,12 @@ export default {
         publisher: null,
         releaseDate: null,
         discount: 0,
+        // 不参与表单编辑，仅保证更新和创建时携带数据
+        id: null,
+        image: ".png",
+        browse: 0,
+        purchases: 0,
+        state: 0
       },
       productFormRules: {
         name: [
@@ -158,13 +163,12 @@ export default {
           if (valid) {
             let product = data.productFormData;
             let editType = product.id ? 'update' : 'create';
+            // vuex的active包装的修改，修改完后会更新vuex中的数据，该数据会在其他页面用到，需要保持最新状态
             let requiredState = await store.dispatch("product/edit_product", { product, editType });
-            if (requiredState) {
-              renewProductFormDataByStore();
+            if (requiredState)
               ElMessage.success("保存成功");
-            } else {
+            else
               ElMessage.error("保存失败");
-            }
           }
           data.other.loading = false;
         });
@@ -174,21 +178,17 @@ export default {
       },
     };
 
-    // 表单赋值
-    const renewProductFormDataByStore = () => {
+    onMounted(async () => {
+      data.other.loading = true;
+      // state：1 被启用的分类
+      data.productTypes.push(...(await getProductTypes({ state: 1 })));
+      // 获取vuex存储的product
       let product = store.state.product.productData;
       if (product) {
         Object.keys(data.productFormData).forEach(key => {
           data.productFormData[key] = product[key];
         });
       }
-    }
-
-    onMounted(async () => {
-      data.other.loading = true;
-      // state：1 被启用的分类
-      data.productTypes.push(...(await getProductTypes({ state: 1 })));
-      renewProductFormDataByStore();
       data.other.loading = false;
     });
 

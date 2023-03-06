@@ -8,7 +8,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-select v-model="searchFormData.state" placeholder="状态">
-                        <el-option label="全部" :value="null" />
+                        <el-option label="全部状态" :value="null" />
                         <el-option label="禁用" :value="0" />
                         <el-option label="启用" :value="1" />
                     </el-select>

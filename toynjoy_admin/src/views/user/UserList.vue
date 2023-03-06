@@ -17,13 +17,13 @@
                 </el-form-item>
                 <el-form-item prop="typeId">
                     <el-select v-model="searchFormData.typeId" placeholder="类型">
-                        <el-option label="全部" :value="null" />
+                        <el-option label="全部类型" :value="null" />
                         <el-option v-for="ut in userTypes" :label="ut.typeName" :value="ut.id" />
                     </el-select>
                 </el-form-item>
                 <el-form-item>
                     <el-select v-model="searchFormData.state" placeholder="状态">
-                        <el-option label="全部" :value="null" />
+                        <el-option label="全部状态" :value="null" />
                         <el-option label="禁用" :value="0" />
                         <el-option label="启用" :value="1" />
                     </el-select>
@@ -48,7 +48,8 @@
             <el-table-column fixed="right" label="操作" width="130">
                 <template #default="scope">
                     <el-button type="primary" icon="EditPen" @click="openDialog(scope)" />
-                    <el-button type="danger" icon="Lock" @click="changeState(scope)" />
+                    <el-button v-if="scope.row.state === 1" type="danger" icon="Lock" @click="changeState(scope, 0)" />
+                    <el-button v-else type="success" icon="Unlock" @click="changeState(scope, 1)" />
                 </template>
             </el-table-column>
         </el-table>
@@ -67,8 +68,10 @@
 
 <script>
 import { reactive, onMounted, ref } from 'vue'
-import { getUserTypes, getUsers, getCount } from '@/api/user'
 import { useStore } from 'vuex'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { getUserTypes, getUsers, getCount, updateUser } from '@/api/user'
+import { cloneObj } from '@/utils/basic';
 import UserEdit from '@/components/user/UserEdit.vue'
 
 export default {
@@ -123,7 +126,7 @@ export default {
                     }
                 });
             },
-            searchFormReset: (formRef) => {
+            searchFormReset(formRef) {
                 formRef.resetFields();
                 eventCallbacks.searchFormSubmit(formRef);
             },
@@ -138,6 +141,22 @@ export default {
             dialogBeforeClose(done) {
                 eventCallbacks.searchFormSubmit(doms.searchForm.value);
                 done();
+            },
+            async changeState(scope, state) {
+                let loginUser = store.state.user.loginUser;
+                if (state != 0 || scope.row.username != loginUser.username) {
+                    let data = cloneObj(scope.row);
+                    data.state = state
+                    if (await updateUser(data))
+                        eventCallbacks.searchFormSubmit(doms.searchForm.value);
+                    else
+                        ElMessage.error("更新失败");
+                } else {
+                    ElMessageBox.alert('为保证至少存在一名【管理员】\n暂不支持修改当前登录用户的状态', '警告', {
+                        confirmButtonText: 'OK',
+                        type: 'warning',
+                    });
+                }
             }
         }
 

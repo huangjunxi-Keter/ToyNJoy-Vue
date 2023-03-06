@@ -1,5 +1,6 @@
 <template>
-    <el-form v-loading="other.isloading" :model="newsFormData" ref="newsForm" :rules="newsFormRules" label-width="55px" :inline="false">
+    <el-form v-loading="other.isloading" :model="newsFormData" ref="newsForm" :rules="newsFormRules" label-width="55px"
+        :inline="false">
         <el-form-item label="标题" prop="title">
             <el-input v-model="newsFormData.title" />
         </el-form-item>
@@ -7,7 +8,7 @@
             <el-upload ref="imageUpload" list-type="picture-card" :auto-upload="false" :name="upload.name"
                 :accept="upload.accept" :limit="1" method="post" :action="`${getRequestAddress()}/api/News/uploadImage`"
                 :headers="getRequestHeader()" :file-list="upload.imageFileList" :on-exceed="handleExceed"
-                :on-success="handleSuccess">
+                :before-upload="beforeUpload" :on-success="handleSuccess">
                 <el-icon>
                     <Plus />
                 </el-icon>
@@ -97,10 +98,9 @@ export default {
 
         const eventCallBacks = {
             handleExceed: (files) => {
-                doms.imageUpload.value.clearFiles();
                 const file = files[0];
-                console.log(file);
                 file.uid = genFileId();
+                doms.imageUpload.value.clearFiles();
                 doms.imageUpload.value.handleStart(file);
                 // 通过uid生成file.name(uid来自file，是唯一的)
                 let fileType = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
@@ -129,6 +129,17 @@ export default {
                             ElMessage.error("保存失败");
                     }
                 });
+            },
+            beforeUpload(file) {
+                let result = true;
+                if (file.type.indexOf("image/") < 0) {
+                    result = false;
+                    ElMessage.error("文件类型不正确");
+                } else if (file.size / 1024 / 1024 > 15) {
+                    result = false;
+                    ElMessage.error("文件不能大于15MB");
+                }
+                return result;
             },
             handleSuccess(response) {
                 if (response) {

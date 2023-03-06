@@ -259,7 +259,7 @@ export default {
                 let userInfoValid = await doms.userInfoForm.value.validate((valid) => valid);
 
                 if (userValid && userInfoValid) {
-                    if (store.state.user.loginUser.id != data.userFormData.id || data.userFormData.typeId === 1) {
+                    if (store.state.user.loginUser.username != data.userFormData.username || (data.userFormData.typeId == 1 && data.userFormData.state == 1)) {
                         data.other.isloading = true;
                         let userReponse = await updateUser(data.userFormData);
                         let userInfoReponse = await updateUserInfo(data.userInfoFormData);
@@ -275,7 +275,7 @@ export default {
                         }
                         data.other.isloading = false;
                     } else {
-                        ElMessageBox.alert('为保证至少存在一名【管理员】\n暂不支持修改当前登录用户的类型', '警告', {
+                        ElMessageBox.alert('为保证至少存在一名【管理员】\n暂不支持修改当前登录用户的【类型】和【状态】', '警告', {
                             confirmButtonText: 'OK',
                             type: 'warning',
                         });

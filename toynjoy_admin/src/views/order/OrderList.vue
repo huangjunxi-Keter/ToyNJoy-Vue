@@ -16,7 +16,7 @@
             </el-form-item>
             <el-form-item prop="state">
                 <el-select v-model="searchFormData.state" placeholder="状态">
-                    <el-option label="全部" :value="null" />
+                    <el-option label="全部状态" :value="null" />
                     <el-option label="未支付" :value="0" />
                     <el-option label="已支付" :value="1" />
                     <el-option label="已关闭" :value="2" />

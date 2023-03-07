@@ -14,7 +14,8 @@
     "particles-bg-vue": "^1.3.5",
     "vue": "^2.6.14",
     "vue-router": "^3.6.5",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "vuex-along": "^1.2.13"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

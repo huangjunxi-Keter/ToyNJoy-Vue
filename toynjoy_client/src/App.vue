@@ -15,15 +15,20 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'App',
+  components: {
+    'head-navigation': Head_Navigation,
+    'clien-footer': Clien_Footer,
+    'toolbar': Toolbar
+  },
   computed: {
     ...mapState('user', ['userData']),
-    ...mapState('system', ['isLogin'])
+    ...mapState('system', ['isLogin', 'isLoading'])
   },
   methods: {
     ...mapMutations('user', ['UPDATE_USER_DATA'])
   },
   mounted() {
-    //#region 全局事件（路由跳转）
+    // 全局事件（路由跳转）
     this.$bus.$on('routeGo', function (name, params) {
       // 判断，目标路由不是当前路由再跳转（重复跳转回报错）
       if (this.$route.name != name && this.$route.params != params) {
@@ -34,9 +39,8 @@ export default {
       // 页面回到顶部
       scrollTo(0, 0);
     });
-    //#endregion
 
-    //#region 如果本地有token，获取一下用户信息
+    // 如果本地有token，获取一下用户信息
     if (this.isLogin) {
       //#region 获取用户信息
       this.myAxios({
@@ -50,12 +54,6 @@ export default {
         }
       });
     }
-    //#endregion
-  },
-  components: {
-    'head-navigation': Head_Navigation,
-    'clien-footer': Clien_Footer,
-    'toolbar': Toolbar
   }
 }
 </script>
@@ -68,7 +66,7 @@ export default {
 }
 
 body {
-  background-color: transparent !important;
+  background-color: #f5f5f5 !important;
 }
 
 .bodyer {

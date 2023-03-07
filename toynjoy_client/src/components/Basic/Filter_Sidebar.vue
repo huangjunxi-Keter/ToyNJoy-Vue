@@ -168,9 +168,6 @@ export default {
 .accordion {
     width: 20vw;
     min-width: 200px;
-    position: absolute;
-    top: 40px;
-    right: 90px;
 }
 
 .card-body {

@@ -1,12 +1,18 @@
 <template>
   <div>
-    <div id="display_board_list">
-      <!--最新的前4个游戏-->
+    <!--最新的前4个游戏-->
+    <div class="display_board_list">
       <div v-for="product in displayBoardData">
         <display-board :products="displayBoardData" :product="product" />
       </div>
     </div>
-    <home-news :news="homeNewsData" />
+    <!--最新的前3条新闻-->
+    <div class="home_news">
+      <p>
+        <span>新闻消息</span>
+      </p>
+      <news-box v-for="(news, index) in homeNewsData" :news="news" :index="index" />
+    </div>
     <rotation-banner rid="purchases" title="销量冠军" :productsActive="rotationBannerData_purchasesTop_active"
       :products="rotationBannerData_purchasesTop" />
     <rotation-banner rid="browse" title="最受关注" :productsActive="rotationBannerData_browseTop_active"
@@ -16,11 +22,16 @@
 
 <script>
 import Display_Board from '@/components/Home/Display_Board.vue';
-import Home_News from '@/components/Home/Home_News.vue';
 import Rotation_Banner from '@/components/Rotation_Banner.vue';
+import News_Box from '@/components/News_Box.vue';
 
 export default {
   name: 'Home',
+  components: {
+    'display-board': Display_Board,
+    'rotation-banner': Rotation_Banner,
+    'news-box': News_Box,
+  },
   data() {
     return {
       displayBoardData: [],
@@ -30,11 +41,6 @@ export default {
       rotationBannerData_browseTop_active: [],
       rotationBannerData_browseTop: [],
     }
-  },
-  components: {
-    'display-board': Display_Board,
-    'home-news': Home_News,
-    'rotation-banner': Rotation_Banner
   },
   mounted() {
     //#region 顶部大模块数据
@@ -91,12 +97,31 @@ export default {
 </script>
 
 <style scoped>
-#display_board_list {
+.display_board_list {
   /*商品前4*/
   width: 100%;
   min-width: 1300px;
-  /* height: 100vh;
-    min-height: 800px; */
+  height: 100vh;
+  user-select: none;
+}
+
+.home_news {
+  clear: both;
+}
+
+.home_news>p {
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 45px;
+  padding: 1vw 2vw;
+  margin: 0;
+}
+
+.home_news>p>span {
+  display: block;
+  text-align: center;
+  width: 105px;
+  border-bottom: 6.5px solid red;
   user-select: none;
 }
 </style>

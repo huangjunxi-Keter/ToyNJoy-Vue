@@ -6,7 +6,9 @@
             </a>
         </li>
         <li class="page-item" v-for="pageNum in pageList">
-            <a @click.prevent="changePage(pageNum)" class="page-link">{{ pageNum }}</a>
+            <a @click.prevent="changePage(pageNum)" :class="`page-link ${page.nowPage === pageNum ? 'active' : ''}`">
+                {{ pageNum }}
+            </a>
         </li>
         <li class="page-item">
             <a @click.prevent="changePage(page.pageTotal)" class="page-link" aria-label="Next">
@@ -54,13 +56,17 @@ export default {
 
 <style scoped>
 .pagination {
-    margin: 0 auto 20px auto;
+    margin: 0 auto;
     clear: both;
 }
 
 .page-link {
-    color: black;
+    color: #666;
     user-select: none;
     cursor: pointer;
+}
+
+.page-link.active {
+    color: #111;
 }
 </style>

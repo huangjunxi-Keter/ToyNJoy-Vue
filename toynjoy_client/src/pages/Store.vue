@@ -6,7 +6,7 @@
             </div>
             <pagination :page="page" @updateData="getProducts" />
         </div>
-        <filter-sidebar @updateData="getProducts" />
+        <filter-sidebar class="filter-sidebar" @updateData="getProducts" />
     </div>
 </template>
 
@@ -17,6 +17,11 @@ import Filter_Sidebar from '@/components/Basic/Filter_Sidebar.vue';
 
 export default {
     name: 'Store',
+    components: {
+        'product-box': Product_Box,
+        'filter-sidebar': Filter_Sidebar,
+        'pagination': Pagination
+    },
     data() {
         return {
             page: {
@@ -40,7 +45,8 @@ export default {
                 params: {
                     page: this.page.nowPage - 1,
                     count: this.page.pageItem,
-                    ...query
+                    ...query,
+                    state: 1
                 },
                 success: (response) => {
                     // console.log(response);
@@ -49,11 +55,6 @@ export default {
             });
         },
         //#endregion
-    },
-    components: {
-        'product-box': Product_Box,
-        'filter-sidebar': Filter_Sidebar,
-        'pagination': Pagination
     },
     mounted() {
         //#region 初始化分页数据
@@ -72,28 +73,16 @@ export default {
 
 <style scoped>
 .bodyer {
-    padding: 20px 0px 0px 90px;
-    position: relative;
-}
-
-.background{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 99vw;
-    height: 100%;
-}
-
-.background * {
-    height: 100%;
+    padding: 20px 100px 0px 100px;
+    display: flex;
 }
 
 .products {
-    width: 66vw;
+    flex: 1;
+    padding-bottom: 20px;
 }
 
-.productBoxs {
-    width: 100%;
-    min-height: 62.65vh;
+.filter-sidebar {
+    padding: 20px 0;
 }
 </style>

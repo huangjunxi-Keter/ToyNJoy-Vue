@@ -12,11 +12,11 @@ export const mixin = {
             serverAddress: 'https://localhost:7046/',
             emailRegEx: /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/,
             idCardRegEx: /^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}([0-9]|x|X)$/,
-            phoneNumberRegEx: /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/
+            phoneNumberRegEx: /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/,
         }
     },
     methods: {
-        ...mapMutations('system', ['UPDATE_LOGIN_USER']),
+        ...mapMutations('system', ['UPDATE_LOGIN_STATE']),
         //#region 封装 axios 方法
         myAxios({ method, url, params, data, success, headers }) {
             let request = axios({
@@ -30,7 +30,7 @@ export const mixin = {
             request.catch(error => {
                 console.log(error);
                 if (error.response.status == 401) {
-                    this.UPDATE_LOGIN_USER('');
+                    this.UPDATE_LOGIN_STATE(null);
                 }
             });
         },

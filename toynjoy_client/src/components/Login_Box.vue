@@ -44,7 +44,8 @@ export default {
         }
     },
     methods: {
-        ...mapMutations('system', ['UPDATE_LOGIN_USER']),
+        ...mapMutations('system', ['UPDATE_LOGIN_STATE']),
+        ...mapMutations('user', ['UPDATE_USER_DATA']),
         login() {
             if (this.user.username.trim() != '' && this.user.password.trim() != '') {
                 this.message = '';
@@ -56,7 +57,8 @@ export default {
                         if (response.data.code == 0)
                             this.message = response.data.message;
                         else {
-                            this.UPDATE_LOGIN_USER(response.headers.token);
+                            this.UPDATE_LOGIN_STATE(response.headers.token);
+                            this.UPDATE_USER_DATA(response.data.data);
                             this.$router.go(-1);
                         }
                     }

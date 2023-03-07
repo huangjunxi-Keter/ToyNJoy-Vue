@@ -24,6 +24,10 @@ import Order_Dropdowns from '@/components/Basic/Order_Dropdowns.vue';
 
 export default {
     name: 'Wish_List',
+    components: {
+        'product-box-long': Product_Box_Long,
+        'order-dropdowns': Order_Dropdowns
+    },
     data() {
         return {
             name: '',
@@ -60,10 +64,6 @@ export default {
                 }
             });
         }
-    },
-    components: {
-        'product-box-long': Product_Box_Long,
-        'order-dropdowns': Order_Dropdowns
     },
     mounted() {
         this.getWishList();

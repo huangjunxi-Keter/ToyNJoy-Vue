@@ -78,8 +78,10 @@ export default {
 }
 
 .title {
-    padding: 25px 0 15px 0;
-    border-bottom: 0.1vw solid #999999;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 0.2vw 0.05vw #aeaeae;
+    border-radius: 0 0 10px 10px;
 }
 
 .userBox {
@@ -94,6 +96,7 @@ export default {
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
+    box-shadow: 0 0 0.2vw 0.02vw #808080;
 }
 
 .nickname {
@@ -116,6 +119,7 @@ export default {
     border-radius: 5px;
     background-color: rgba(150, 150, 150, 0.1);
     box-shadow: 0 0 3px rgb(255 255 255 / 50%) inset, 1px 1px 0 0 rgb(0 0 0 / 0%);
+    outline: none;
 }
 
 .orderComponent {

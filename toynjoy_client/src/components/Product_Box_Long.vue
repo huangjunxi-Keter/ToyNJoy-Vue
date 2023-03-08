@@ -20,7 +20,7 @@
             </div>
             <p>
                 添加日期：{{ wishlist.joinDate | timeformater }}
-                (<span v-on:click="DWL(id)">移除</span>)
+                (<span v-on:click="del(wishlist.id)">移除</span>)
             </p>
         </div>
     </div>
@@ -29,7 +29,21 @@
 <script>
 export default {
     name: 'Product_Box_Long',
-    props: ['wishlist']
+    props: ['wishlist'],
+    methods: {
+        del(id) {
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: 'WishList/del',
+                params: { id },
+                success: (response) => {
+                    this.$router.go(0);
+                }
+            });
+        }
+    }
 }
 </script>
 
@@ -43,8 +57,8 @@ export default {
     width: 100%;
     height: 200px;
     background-color: white;
-    box-shadow: 0 0 0.2vw 0.02vw #808080;
-    border-radius: 0.15vw;
+    box-shadow: 0 0 0.2vw 0.05vw #aeaeae;
+    border-radius: 5px;
 }
 
 .product>div {
@@ -57,6 +71,7 @@ export default {
     width: 35%;
     background-size: 100% 100%;
     box-shadow: 0 0 0.2vw 0.02vw #aaaaaa;
+    border-radius: 5px 0 0 5px;
 }
 
 .left {

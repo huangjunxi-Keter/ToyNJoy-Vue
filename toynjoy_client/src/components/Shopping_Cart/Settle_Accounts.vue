@@ -1,19 +1,18 @@
 <template>
+    <!-- 不要改id，支付表单要通过id插入 -->
     <div id="settle_accounts">
-        <div class="content">
-            <div class="total_price">
-                <span>
-                    预计总额
-                    <span>{{ this.ShoppingCart.length }}</span>
-                </span>
-                ￥{{ totalAmount }}
-            </div>
-            <div class="operation">
-                <p>为自己购买还是作为礼物购买？请选一项以继续付款。</p>
-                <div>
-                    <button @click="createOrder()">为自己购买</button>
-                    <button id="ForFriend">作为礼物购买</button>
-                </div>
+        <div class="total_price">
+            <span>
+                预计总额
+                <span>{{ this.ShoppingCart.length }}</span>
+            </span>
+            ￥{{ totalAmount }}
+        </div>
+        <div class="operation">
+            <p>为自己购买还是作为礼物购买？请选一项以继续付款。</p>
+            <div>
+                <button @click="createOrder()">立即购买</button>
+                <!-- <button id="ForFriend">作为礼物购买</button> -->
             </div>
         </div>
     </div>
@@ -56,9 +55,13 @@ export default {
 
 <style scoped>
 #settle_accounts {
-    box-shadow: 0 0 4px 0.5px #aeaeae;
+    width: 100%;
+    padding: 0 10px;
+    margin: 0 auto;
     color: #656565;
     border-radius: 5px;
+    box-shadow: 0 0 4px 0.5px #aeaeae;
+    background-color: white;
 }
 
 .total_price {
@@ -78,12 +81,6 @@ export default {
     font-size: 12px;
     position: absolute;
     top: 0;
-}
-
-.content {
-    width: 100%;
-    padding: 0 10px;
-    margin: 0 auto;
 }
 
 .operation {
@@ -109,7 +106,7 @@ export default {
     cursor: pointer;
 }
 
-.operation>div>button:nth-child(1) {
+/* .operation>div>button:nth-child(1) {
     margin-right: 15px;
-}
+} */
 </style>

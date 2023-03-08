@@ -87,6 +87,7 @@ export default {
     width: 65%;
     height: 100%;
     box-shadow: 0 0 1vw 0.2vw #aeaeae;
+    background-color: white;
 }
 
 #basic_information>.left .carousel-item {
@@ -119,6 +120,7 @@ export default {
     height: 30vw;
     min-height: 435px;
     box-shadow: 0 0 0.5vw 0.1vw #aeaeae;
+    background-color: white;
 }
 
 #basic_information>.right>ul {

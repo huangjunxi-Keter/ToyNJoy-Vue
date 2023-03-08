@@ -33,6 +33,7 @@ export default {
     line-height: 5vw;
     margin: 1.5vw auto;
     box-shadow: 0 0 0.2vw 0.05vw #aeaeae;
+    background-color: white;
 }
 
 #Has_Product_Friends>p {

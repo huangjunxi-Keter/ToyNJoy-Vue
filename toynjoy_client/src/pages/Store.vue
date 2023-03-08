@@ -73,13 +73,17 @@ export default {
 
 <style scoped>
 .bodyer {
-    padding: 20px 100px 0px 100px;
+    padding: 20px 80px 0px 80px;
     display: flex;
 }
 
 .products {
     flex: 1;
-    padding-bottom: 20px;
+    margin: 20px;
+    padding: 20px 0 20px 25px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 4px 0.5px #aeaeae;
 }
 
 .filter-sidebar {

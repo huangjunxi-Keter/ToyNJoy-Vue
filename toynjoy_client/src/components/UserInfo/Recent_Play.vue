@@ -1,11 +1,11 @@
 <template>
     <div ref="recent_play" class="recent_play">
-        <div class="title">最新动态（过去两周）</div>
+        <div class="title">最近游玩</div>
         <a v-for="rp in recentPlay" :key="rp.id" @click="go('product', { id: rp.product.id })"
             :style="{ 'background-image': `url('${getImage('products/' + rp.product.image)}')` }">
             <span class="product_name">{{ rp.product.name }}</span>
             <span class="join_time">购买于{{ rp.joinTime | timeformater }}</span>
-            <span class="total_hours">{{ rp.totalHours }} 小时</span>
+            <!-- <span class="total_hours">{{ rp.totalHours }} 小时</span> -->
             <span class="last_time">最后运行日期：{{ rp.lastTime | timeformater }}</span>
         </a>
 
@@ -40,23 +40,22 @@ export default {
 
 <style scoped>
 .recent_play {
-    top: 0;
-    left: 0;
-    width: 64vw;
+    width: 80%;
     min-width: 950px;
     height: 35vw;
     min-height: 550px;
     border-radius: 10px;
-    padding-top: 0.5vw;
+    padding-top: 10px;
     overflow: hidden;
-    position: relative;
     background-color: white;
-    box-shadow: 0 0 0.25vw 0.15vw #dadada;
-    transition: 0.5s;
+    box-shadow: 0 0 5px 2px #dadada;
+    transition: 0.2s;
+    /* 供子元素定位 */
+    position: relative;
 }
 
 .recent_play>.title {
-    padding: 0.5vw 1.65vw;
+    padding: 5px 20px;
     font-size: 25px;
     font-weight: bolder;
 }
@@ -72,7 +71,7 @@ export default {
     background-repeat: no-repeat;
     margin: 1vw auto;
     /* box-shadow:0.15vw 0.3vw 0.35vw 0.2vw #afafaf; */
-    box-shadow: 0 0 0.25vw 0.15vw #dadada;
+    box-shadow: 0 0 5px 2px #dadada;
     position: relative;
     cursor: pointer;
 }

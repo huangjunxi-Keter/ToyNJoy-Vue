@@ -1,49 +1,252 @@
 <template>
-    <div id="userInfoShow">
-        <ul>
-            <li>地区：<span>{{ userInfo.address }}</span></li>
-            <li>生日：<span>{{ userInfo.birthday }}</span></li>
-            <li>游戏&nbsp;<span class="big">0</span></li>
-            <li>好友&nbsp;<span class="big">0</span></li>
-            <li class="line"></li>
-            <!-- @foreach (var item in Model.Friend.ToList().Take(5))
-            {
-            <li class="p_friend" uid="@item.Users1.username">
-                <div class="virtual_image"
-                    style="background-image:url('../../Content/Image/user/@item.Users1.virtual_image')">
+    <div class="userInfoShow">
+        <div class="title">用户详情</div>
+        <div class="content">
+            <div class="item">
+                <span class="title-min">生日：</span>
+                <span class="text">{{ userInfo.birthday }}</span>
+            </div>
+            <div class="item">
+                <span class="title-min">手机：</span>
+                <span class="text">{{ userInfo.phone }}</span>
+            </div>
+            <div class="item">
+                <span class="title-min">邮箱：</span>
+                <span class="text">{{ userData.email }}</span>
+            </div>
+            <div class="item">
+                <span class="title-min">地区：</span>
+                <span class="text">{{ userInfo.address }}</span>
+            </div>
+            <div class="item">
+                <span class="open-order-modal" data-toggle="modal" data-target="#staticBackdrop">我的订单&nbsp;&#8594;</span>
+            </div>
+            <!-- 订单 Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <!-- 提示信息 -->
+                <div v-show="showError" class="alert alert-danger alert-dismissible fade show">
+                    <strong>错误!</strong> 失败的操作。
                 </div>
-                @{
-                if (item.Users1.state == 1)
-                {
-                <div class="user_name" style="color:#88e900">@item.Users1.nickname</div>
-                <div class="user_state" style="color:#09b2fc">在线</div>
-                }
-                else if (item.Users1.state == 0)
-                {
-                <div class="user_name" style="color:#aeaeae">@item.Users1.nickname</div>
-                <div class="user_state" style="color:#aeaeae">离线</div>
-                }
-                }
-                <div class="lv">LV@(item.Users1.Lv)</div>
-            </li>
-            } -->
-        </ul>
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <!-- 模态框头部 -->
+                        <div class="modal-header">
+                            <div class="input-group mt-3 mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                        data-toggle="dropdown">
+                                        {{ selectTitle }}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <span class="dropdown-item" @click="changeSearchState(null)">全部</span>
+                                        <span class="dropdown-item" @click="changeSearchState(0)">未支付</span>
+                                        <span class="dropdown-item" @click="changeSearchState(1)">已支付</span>
+                                        <span class="dropdown-item" @click="changeSearchState(2)">已关闭</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" placeholder="按订单号搜索" v-model="searchOrderId" />
+                            </div>
+                            <!-- 关闭按钮 -->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 表格 -->
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>总价</th>
+                                        <th>时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="order in orders">
+                                        <td>{{ order.id }}</td>
+                                        <td>￥{{ order.totalAmount }}.00</td>
+                                        <td>{{ order.createDate | timeformater }}</td>
+                                        <td>{{ getStateStr(order.state) }}</td>
+                                        <td>
+                                            <template v-if="order.state === 0">
+                                                <button class="btn btn-primary btn-sm" @click="toAlipay(order)">支付</button>
+                                                &nbsp;
+                                                <button class="btn btn-danger btn-sm" @click="changeOrderState(order, 2)">
+                                                    取消
+                                                </button>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination :page="page" @updateData="searchOrder" />
+                            <!-- 支付表单插入 -->
+                            <div id="settle_accounts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+        </div>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Pagination from '@/components/Basic/Pagination.vue';
 
 export default {
     name: 'User_Info_Show',
+    components: {
+        'pagination': Pagination
+    },
+    data() {
+        return {
+            orders: [],
+            selectTitle: '全部',
+            showError: false,
+            searchOrderId: null,
+            searchState: null,
+            searchTime: null,
+            page: {
+                dataTotal: 0,
+                pageItem: 5,
+                pageTotal: 0,
+                nowPage: 1,
+                previous: 0,
+                next: 2
+            }
+        }
+    },
     computed: {
         ...mapState('user', ['userData', 'userInfo'])
+    },
+    watch: {
+        searchOrderId() {
+            if (this.searchTime)
+                clearTimeout(this.searchTime);
+            this.searchTime = setTimeout(() => {
+                this.searchOrder();
+            }, 300);
+        }
+    },
+    methods: {
+        //#region 获取订单（含分页）
+        searchOrder(nowPage) {
+
+            // 查询条件
+            let params = {
+                username: this.userData.username,
+                orderId: this.searchOrderId,
+                state: this.searchState
+            };
+
+            // 查询总条数
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: '/Order/findCount',
+                params,
+                success: (response) => {
+                    this.page.dataTotal = response.data;
+                    this.page.pageTotal = Math.ceil(this.page.dataTotal / this.page.pageItem);
+
+                    if (nowPage)
+                        this.page.nowPage = nowPage;
+                    // 追加分页条件
+                    params.page = this.page.nowPage - 1;
+                    params.count = this.page.pageItem;
+
+                    // 查询订单
+                    this.myAxios({
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                        },
+                        url: '/Order/find',
+                        params,
+                        success: (response) => {
+                            this.orders = response.data;
+                        }
+                    });
+                }
+            });
+        },
+        //#endregion
+
+        //#region 状态字符串
+        getStateStr(state) {
+            let result = '';
+            switch (state) {
+                case null:
+                    result = "全部";
+                    break;
+                case 0:
+                    result = "未支付";
+                    break;
+                case 1:
+                    result = "已支付";
+                    break;
+                case 2:
+                    result = "已关闭";
+                    break;
+            }
+            return result;
+        },
+        //#endregion
+
+        //#region 跳转到支付页面
+        toAlipay(order) {
+            if (order.alipayForm) {
+                //（！！！AdGuard 广告拦截器 会影响沙箱支付宝 使其支付后出现【系统有点忙】错误！！！）
+                const div = document.createElement('div');
+                div.innerHTML = order.alipayForm;
+                document.getElementById('settle_accounts').appendChild(div);
+                document.getElementById('alipaysubmit').submit();
+            } else {
+                this.showError = true;
+            }
+        },
+        //#endregion
+
+        //#region 改变订单状态
+        changeOrderState(order, state) {
+            let data = this.cloneObj(order);
+            data.state = state;
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                method: 'post',
+                url: '/Order/upd',
+                data,
+                success: (response) => {
+                    if (response.data)
+                        this.$router.go(0);
+                }
+            });
+        },
+        //#endregion
+
+        //#region 状态下拉菜单按钮点击事件
+        changeSearchState(state) {
+            this.selectTitle = this.getStateStr(state);
+            this.searchState = state;
+            this.searchOrder();
+        }
+        //#endregion
+    },
+    mounted() {
+        this.searchOrder();
     }
 }
 </script>
 
 <style scoped>
-#userInfoShow {
+.userInfoShow {
     width: 20vw;
     min-width: 240px;
     height: 29vw;
@@ -51,92 +254,52 @@ export default {
     border-radius: 10px;
     background-color: white;
     box-shadow: 0 0 0.25vw 0.15vw #dadada;
+    overflow: hidden;
 }
 
-#userInfoShow>ul {
-    list-style: none;
-    padding: 1vw 2vw;
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    width: 100%;
+    padding: 15px 25px;
 }
 
-#userInfoShow .state {
-    height: 2vw;
-    font-size: 1.5vw;
-    color: #09b2fc;
-    font-weight: initial;
+.content {
+    padding: 0 40px;
+}
+
+.item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 15px;
+    color: #888;
+}
+
+.item:last-child {
+    padding-bottom: 0;
+}
+
+.title-min {
+    color: #333;
+}
+
+.open-order-modal {
+    color: dodgerblue;
     user-select: none;
-}
-
-#userInfoShow li {
-    font-size: 1vw;
-    font-weight: bold;
-    color: #656565;
-    margin-bottom: 0.5vw;
-}
-
-#userInfoShow li>span {
-    font-weight: initial;
-    color: #959595;
-}
-
-#userInfoShow .big {
-    font-size: 1.35vw;
-    color: #aeaeae;
-}
-
-#userInfoShow .line {
-    height: 0.01vw;
-}
-
-#userInfoShow .p_friend {
-    height: 2.5vw;
-    margin-bottom: 1vw;
-    position: relative;
-    font-weight: initial;
-    border-radius: 1.5vw 0.8vw 0.8vw 1.5vw;
     cursor: pointer;
-    transition: 0.25s;
 }
 
-#userInfoShow .p_friend:hover {
-    background: #e0e0e0;
+.open-order-modal:hover {
+    color: rgb(0, 100, 201);
 }
 
-#userInfoShow .p_friend>* {
-    position: absolute;
+.table thead th {
+    border-top: none;
 }
 
-#userInfoShow .virtual_image {
-    top: 0;
-    left: 0;
-    height: 2.5vw;
-    width: 2.5vw;
-    background-size: 100% 100%;
-    border-radius: 1.75vw;
-}
-
-#userInfoShow .user_name {
-    top: 0;
-    left: 3vw;
-}
-
-#userInfoShow .user_state {
-    top: 1.2vw;
-    left: 3vw;
-    font-size: 0.7vw;
+.dropdown-item {
     user-select: none;
-}
-
-#userInfoShow .lv {
-    background-color: #09b2fc;
-    width: 2vw;
-    height: 1vw;
-    line-height: 1vw;
-    text-align: center;
-    font-size: 0.6vw;
-    color: white;
-    border-radius: 0.2vw;
-    top: 0.75vw;
-    right: 1vw;
-    user-select: none;
+    cursor: pointer;
 }
 </style>

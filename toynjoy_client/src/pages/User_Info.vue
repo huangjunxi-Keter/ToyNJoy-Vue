@@ -1,7 +1,6 @@
 <template>
     <div class="bodyer">
         <base-info />
-
         <div class="other">
             <recent-play :recentPlay="recentPlayData" />
             <div class="infoBox">
@@ -63,14 +62,15 @@ export default {
         });
         //#endregion
 
-        //#region 获取最近游玩
+        //#region 获取最近下载
         this.myAxios({
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
             },
             url: 'Library/find',
             params: {
-                beginDays: -14
+                orderby: "LastTime",
+                count: 5
             },
             success: (response) => {
                 this.recentPlayData = response.data;
@@ -98,12 +98,10 @@ export default {
     width: 85vw;
     min-width: 1200px;
     margin: 1vw auto;
-    position: relative;
+    display: flex;
 }
 
 .infoBox {
-    position: absolute;
-    top: 0;
-    right: 0;
+    padding-left: 20px;
 }
 </style>

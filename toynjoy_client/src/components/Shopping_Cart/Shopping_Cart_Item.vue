@@ -41,6 +41,7 @@ export default {
     font-size: 0.9vw;
     box-shadow: 0 0 4px 0.5px #aeaeae;
     border-radius: 5px;
+    background-color: white;
 }
 
 .product>span {

@@ -4,7 +4,7 @@
             <span>购买 {{ product.name }}</span>
             <div v-if="!inLibrary" id="add_Wish_List">
                 <button v-if="inWishList">已在愿望单中</button>
-                <button v-else>添加至愿望单</button>
+                <button v-else @click="addWishList(product.id)">添加至愿望单</button>
             </div>
             <div id="add_Shopping_Car">
                 <label v-if="(product.price > 0) && !inLibrary && !inShoppingCar" style="margin-right:0.25vw">
@@ -39,6 +39,18 @@ export default {
                     this.$router.go(0);
                 }
             });
+        },
+        addWishList(productId) {
+            this.myAxios({
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
+                },
+                url: 'WishList/add',
+                params: { productId },
+                success: (response) => {
+                    this.$router.go(0);
+                }
+            });
         }
     },
     props: ['product', 'inLibrary', 'inWishList', 'inShoppingCar']
@@ -65,6 +77,7 @@ export default {
     font-size: 1.45vw;
     font-family: 'Microsoft YaHei';
     color: #656565;
+    background-color: white;
 }
 
 #operation>.content>div {

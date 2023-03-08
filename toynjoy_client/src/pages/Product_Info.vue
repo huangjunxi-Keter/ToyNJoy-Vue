@@ -135,6 +135,9 @@ export default {
     font-family: 'Microsoft YaHei';
     transition: 0.5s;
     user-select: none;
+    background-color: white;
+    box-shadow: 0 0 0.2vw 0.05vw #aeaeae;
+    padding: 20px;
 }
 
 .intro>.content {

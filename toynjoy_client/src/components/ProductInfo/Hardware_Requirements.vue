@@ -41,6 +41,9 @@ export default {
     font-weight: 700;
     font-family: 'Microsoft YaHei';
     user-select:none;
+    background-color: white;
+    box-shadow: 0 0 0.2vw 0.05vw #aeaeae;
+    padding: 20px;
 }
 .hardware_requirements > .content {
     margin-top: 0.3vw;

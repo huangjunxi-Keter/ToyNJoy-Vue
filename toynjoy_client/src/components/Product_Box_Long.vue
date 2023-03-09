@@ -15,8 +15,9 @@
         </div>
         <div class="right">
             <div class="buttonBox">
-                ￥{{ wishlist.product.price }}
-                <button v-on:click="addCar(wishlist.product.id)">添加至购物车</button>
+                {{ wishlist.product.price > 0 ? `￥${wishlist.product.price}` : "免费" }}
+                <button v-if="inShoppingCar || hasOrder">{{ inShoppingCar ? "已在购物车中" : "已存在订单" }}</button>
+                <button v-else v-on:click="addCar(wishlist.product.id)">添加至购物车</button>
             </div>
             <p>
                 添加日期：{{ wishlist.joinDate | timeformater }}
@@ -30,12 +31,24 @@
 export default {
     name: 'Product_Box_Long',
     props: ['wishlist'],
+    data() {
+        return {
+            inShoppingCar: false,
+            hasOrder: false
+        }
+    },
     methods: {
+        addCar(id) {
+            this.myAxios({
+                url: "ShoppingCar/add",
+                params: { productId: id },
+                success: (response) => {
+                    this.$router.go(0);
+                }
+            });
+        },
         del(id) {
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: 'WishList/del',
                 params: { id },
                 success: (response) => {
@@ -43,6 +56,27 @@ export default {
                 }
             });
         }
+    },
+    mounted() {
+        //#region 查询是否在购物车中
+        this.myAxios({
+            url: `ShoppingCar/find`,
+            params: { productId: this.wishlist.productId },
+            success: (response) => {
+                this.inShoppingCar = response.data.length > 0;
+            }
+        });
+        //#endregion
+
+        //#region 是否存在订单
+        this.myAxios({
+            url: `Order/findItems`,
+            params: { productId: this.wishlist.productId },
+            success: (response) => {
+                this.hasOrder = response.data.length > 0;
+            }
+        });
+        //#endregion
     }
 }
 </script>

@@ -34,17 +34,21 @@ export default {
     methods: {
         createOrder() {
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 method: 'post',
                 url: 'Order/add',
                 success: (response) => {
                     //（！！！AdGuard 广告拦截器 会影响沙箱支付宝 使其支付后出现【系统有点忙】错误！！！）
-                    const div = document.createElement('div');
-                    div.innerHTML = response.data;
-                    document.getElementById('settle_accounts').appendChild(div);
-                    document.getElementById('alipaysubmit').submit();
+                    if (response.data.indexOf("form") > -1) {
+                        const div = document.createElement('div');
+                        div.innerHTML = response.data;
+                        document.getElementById('settle_accounts').appendChild(div);
+                        document.getElementById('alipaysubmit').submit();
+                    } else if (this.totalAmount === 0) {
+                        this.go("payCallback", {
+                            app_id: "2016101700709747",
+                            out_trade_no: response.data.replace("oid", "")
+                        });
+                    }
                 }
             });
         }

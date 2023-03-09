@@ -127,9 +127,6 @@ export default {
 
             if (this.message.contents.length <= 0) {
                 axios({
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                    },
                     method: 'post',
                     url: `${this.requestAddress}User/upd`,
                     data: this.userData,
@@ -138,9 +135,6 @@ export default {
                     // 如果用户信息更新成功，再更新用户详情
                     if (response.data) {
                         result = axios({
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                            },
                             method: 'post',
                             url: `${this.requestAddress}User/updInfo`,
                             data: this.userInfo,

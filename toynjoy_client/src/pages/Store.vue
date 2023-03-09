@@ -6,7 +6,7 @@
             </div>
             <pagination :page="page" @updateData="getProducts" />
         </div>
-        <filter-sidebar class="filter-sidebar" @updateData="getProducts" />
+        <filter-sidebar class="filter-sidebar" @updateData="updateFilterParams" />
     </div>
 </template>
 
@@ -32,41 +32,50 @@ export default {
                 previous: 0,
                 next: 2
             },
+            filterParams: {},
             products: []
         }
     },
     methods: {
         //#region 根据页码，获取分页后的数据
-        getProducts(newPage, query) {
-            this.page.nowPage = newPage;
-            
+        getProducts(newPage) {
             this.myAxios({
-                url: 'product/find',
-                params: {
-                    page: this.page.nowPage - 1,
-                    count: this.page.pageItem,
-                    ...query,
-                    state: 1
-                },
+                url: 'product/findCount',
+                params: this.filterParams,
                 success: (response) => {
-                    // console.log(response);
-                    this.products = response.data;
+                    this.page.dataTotal = response.data;
+                    this.page.pageTotal = Math.ceil(this.page.dataTotal / this.page.pageItem);
+
+                    if (newPage)
+                        this.page.nowPage = newPage;
+
+                    this.myAxios({
+                        url: 'product/find',
+                        params: {
+                            ...this.filterParams,
+                            state: 1,
+                            page: this.page.nowPage - 1,
+                            count: this.page.pageItem,
+                        },
+                        success: (response) => {
+                            // console.log(response);
+                            this.products = response.data;
+                        }
+                    });
                 }
             });
         },
         //#endregion
+
+        //#region 更新查询条件 并 调用查询寻
+        updateFilterParams(query) {
+            this.filterParams = query;
+            this.getProducts(1);
+        },
+        //#endregion
     },
     mounted() {
-        //#region 初始化分页数据
-        this.myAxios({
-            url: 'product/findCount',
-            success: (response) => {
-                this.page.dataTotal = response.data;
-                this.page.pageTotal = Math.ceil(this.page.dataTotal / this.page.pageItem);
-                this.getProducts(1);
-            }
-        });
-        //#endregion
+        this.getProducts();
     }
 }
 </script>

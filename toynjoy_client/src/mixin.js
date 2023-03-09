@@ -1,10 +1,6 @@
 import axios from "axios";
 import { mapMutations } from "vuex";
 
-//#region  配置 axios 的默认值（反正没在 main 引入，就到这里配算了）【不能写在这里，开始是null会一直是null】
-// axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('LoginUserToken')}`;
-//#endregion
-
 export const mixin = {
   data() {
     return {
@@ -20,9 +16,13 @@ export const mixin = {
   methods: {
     ...mapMutations("system", ["UPDATE_LOGIN_STATE"]),
     //#region 封装 axios 方法
-    myAxios({ method, url, params, data, success, headers }) {
+    myAxios({ method, url, params, data, success, headers, config = {} }) {
       let request = axios({
-        headers,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("LoginUserToken")}`,
+          ...headers
+        },
+        ...config,
         method: method ? method : "get",
         url: this.requestAddress + url,
         params,
@@ -45,8 +45,15 @@ export const mixin = {
     //#endregion
 
     //#region 路由跳转
-    go(routeName, data) {
-      this.$bus.$emit("routeGo", routeName, data);
+    go(name, params) {
+      // 判断，目标路由不是当前路由再跳转（重复跳转回报错）
+      if (this.$route.name != name && this.$route.params != params) {
+        this.$router.push({ name, params });
+      } else {
+        this.$router.go(0);
+      }
+      // 页面回到顶部
+      scrollTo(0, 0);
     },
     //#endregion
 

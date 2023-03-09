@@ -34,9 +34,6 @@ export default {
     mounted() {
         //#region 获取购物车信息
         this.myAxios({
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-            },
             url: 'ShoppingCar/find',
             success: (response) => {
                 this.ShoppingCart = response.data;

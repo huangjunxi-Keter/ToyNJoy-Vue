@@ -140,7 +140,7 @@ export default {
 
         //#region 调用父组件提供的数据更新函数
         updatData() {
-            this.$emit('updateData', 1, this.query);
+            this.$emit('updateData', this.query);
         },
         //#endregion
     },

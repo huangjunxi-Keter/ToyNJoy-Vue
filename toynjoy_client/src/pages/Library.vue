@@ -3,51 +3,125 @@
         <div class="top">
             <ul class="control">
                 <li>
-                    <order-dropdowns :orderTypes="[{ name: '', val: '' }]" />
+                    <dropdowns :dropdownsData="orderDropdowns" @handleChange="changeOrderBy" />
                 </li>
                 <li>
-                    <order-dropdowns :orderTypes="[{ name: '', val: '' }]" />
+                    <dropdowns :dropdownsData="typeDropdowns" title="类型：" @handleChange="changeType" />
                 </li>
-                <li class="refresh" :style="{ 'background-image': `url('${getImage('system/sx_ogy.png')}')` }">
+                <li class="refresh" :style="{ 'background-image': `url('${getImage('system/sx_ogy.png')}')` }"
+                    @click="renovate">
                 </li>
             </ul>
-            <search />
+            <search @handleSearch="clickSearch" />
         </div>
         <div class="content">
             <product-box v-for="ld in LibraryData" :product="ld.product" />
         </div>
+        <pagination :page="page" @updateData="searchLibrary" />
         <div style="clear:both;"></div>
     </div>
 </template>
 
 <script>
-import Order_Dropdowns from '@/components/Basic/Order_Dropdowns.vue';
+import Dropdowns from '@/components/Basic/Dropdowns.vue';
 import Search from '@/components/Basic/Search.vue'
 import Product_Box from '@/components/Product_Box.vue';
+import Pagination from '@/components/Basic/Pagination.vue';
 
 export default {
     name: 'Library',
+    components: {
+        'dropdowns': Dropdowns,
+        'search': Search,
+        'product-box': Product_Box,
+        'pagination': Pagination
+    },
     data() {
         return {
-            LibraryData: []
+            LibraryData: [],
+            orderDropdowns: [
+                { name: '默认排序', val: '' },
+                { name: '按名称排序', val: 'Name' },
+                { name: '按添加日期排序', val: 'JoinTime' },
+            ],
+            typeDropdowns: [
+                { name: '全部', val: '' }
+            ],
+            typeId: '',
+            orderby: '',
+            name: '',
+            page: {
+                dataTotal: 0,
+                pageItem: 12,
+                pageTotal: 0,
+                nowPage: 1,
+                previous: 0,
+                next: 2
+            }
         }
     },
-    components: {
-        'order-dropdowns': Order_Dropdowns,
-        'search': Search,
-        'product-box': Product_Box
+    methods: {
+        searchLibrary(newPage) {
+            let params = {
+                name: this.name,
+                typeId: this.typeId,
+                orderby: this.orderby,
+            };
+
+            this.myAxios({
+                url: 'Library/findCount',
+                params,
+                success: (response) => {
+                    this.page.dataTotal = response.data;
+                    this.page.pageTotal = Math.ceil(this.page.dataTotal / this.page.pageItem);
+
+                    if (newPage)
+                        this.page.nowPage = newPage;
+
+                    this.myAxios({
+                        url: 'Library/find',
+                        params: {
+                            ...params,
+                            page: this.page.nowPage - 1,
+                            count: this.page.pageItem
+                        },
+                        success: (response) => {
+                            this.LibraryData = response.data;
+                        }
+                    });
+                }
+            });
+        },
+        changeOrderBy(orderbyStr) {
+            this.orderby = orderbyStr;
+            this.searchLibrary(1);
+        },
+        changeType(typeId) {
+            this.typeId = typeId;
+            this.searchLibrary(1);
+        },
+        renovate() {
+            this.$router.go(0);
+        },
+        clickSearch(searchStr) {
+            if (searchStr !== this.name) {
+                this.name = searchStr;
+                this.searchLibrary(1);
+            }
+        }
     },
-    mounted() {
+    created() {
         this.myAxios({
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-            },
-            url: 'Library/find',
-            data: {},
+            url: 'ProductType/find',
             success: (response) => {
-                this.LibraryData = response.data;
+                for (let ptype of response.data) {
+                    this.typeDropdowns.push({ name: ptype.typeName, val: ptype.id });
+                }
             }
         });
+    },
+    mounted() {
+        this.searchLibrary();
     }
 }
 </script>

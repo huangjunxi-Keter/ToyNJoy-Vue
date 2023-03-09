@@ -146,9 +146,6 @@ export default {
 
             // 查询总条数
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: '/Order/findCount',
                 params,
                 success: (response) => {
@@ -163,9 +160,6 @@ export default {
 
                     // 查询订单
                     this.myAxios({
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                        },
                         url: '/Order/find',
                         params,
                         success: (response) => {
@@ -217,9 +211,6 @@ export default {
             let data = this.cloneObj(order);
             data.state = state;
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 method: 'post',
                 url: '/Order/upd',
                 data,

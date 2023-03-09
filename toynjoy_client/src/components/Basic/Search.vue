@@ -1,14 +1,24 @@
 <template>
     <div class="sel">
-        <input class="sel_box" type="text" />
-        <input class="sel_button" type="button"
-            :style="{ 'background-image': `url('${getImage('system/sel_gray.png')}')` }" />
+        <input class="sel_box" type="text" v-model="searchStr" />
+        <input class="sel_button" type="button" :style="{ 'background-image': `url('${getImage('system/sel_gray.png')}')` }"
+            @click="search" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Search'
+    name: 'Search',
+    data() {
+        return {
+            searchStr: ''
+        }
+    },
+    methods: {
+        search() {
+            this.$emit('handleSearch', this.searchStr);
+        }
+    }
 }
 </script>
 

@@ -38,9 +38,6 @@ export default {
 
         //#region 获取用户信息
         this.myAxios({
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-            },
             url: `User/get${requestPathHelp}`,
             params: { id: this.id },
             success: (response) => {
@@ -51,9 +48,6 @@ export default {
 
         //#region 获取用户详情
         this.myAxios({
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-            },
             url: `User/getInfo${requestPathHelp}`,
             params: { id: this.id },
             success: (response) => {
@@ -64,9 +58,6 @@ export default {
 
         //#region 获取最近下载
         this.myAxios({
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-            },
             url: 'Library/find',
             params: {
                 orderby: "LastTime",

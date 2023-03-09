@@ -28,25 +28,10 @@ export default {
     ...mapMutations('user', ['UPDATE_USER_DATA'])
   },
   mounted() {
-    // 全局事件（路由跳转）
-    this.$bus.$on('routeGo', function (name, params) {
-      // 判断，目标路由不是当前路由再跳转（重复跳转回报错）
-      if (this.$route.name != name && this.$route.params != params) {
-        this.$router.push({ name, params });
-      } else {
-        this.$router.go(0)
-      }
-      // 页面回到顶部
-      scrollTo(0, 0);
-    });
-
     // 如果本地有token，获取一下用户信息
     if (this.isLogin) {
       //#region 获取用户信息
       this.myAxios({
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-        },
         url: `User/get`,
         params: { id: this.id },
         success: (response) => {

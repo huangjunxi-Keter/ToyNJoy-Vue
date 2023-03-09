@@ -4,7 +4,7 @@
             <span>购买 {{ product.name }}</span>
             <div v-if="!inLibrary" id="add_Wish_List">
                 <button v-if="inWishList">已在愿望单中</button>
-                <button v-else @click="addWishList(product.id)">添加至愿望单</button>
+                <button v-else @click="add('WishList', product.id)">添加至愿望单</button>
             </div>
             <div id="add_Shopping_Car">
                 <label v-if="(product.price > 0) && !inLibrary && !inShoppingCar" style="margin-right:0.25vw">
@@ -13,7 +13,8 @@
                 <label v-else-if="(product.price <= 0) && !inLibrary">免费</label>
                 <button v-if="inLibrary">已在库中</button>
                 <button v-else-if="inShoppingCar">已在购物车中</button>
-                <button v-else @click="addShoppingCart(product.id)">添加至购物车</button>
+                <button v-else-if="hasOrder">已存在订单</button>
+                <button v-else @click="add('ShoppingCar', product.id)">添加至购物车</button>
             </div>
         </div>
     </div>
@@ -28,32 +29,21 @@ export default {
         ...mapState('system', ['isLogin'])
     },
     methods: {
-        addShoppingCart(productId) {
-            this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
-                url: 'ShoppingCar/add',
-                params: { productId },
-                success: (response) => {
-                    this.$router.go(0);
-                }
-            });
+        add(type, productId) {
+            if (this.isLogin) {
+                this.myAxios({
+                    url: `${type}/add`,
+                    params: { productId },
+                    success: (response) => {
+                        this.$router.go(0);
+                    }
+                });
+            } else {
+                this.$router.push("/login");
+            }
         },
-        addWishList(productId) {
-            this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
-                url: 'WishList/add',
-                params: { productId },
-                success: (response) => {
-                    this.$router.go(0);
-                }
-            });
-        }
     },
-    props: ['product', 'inLibrary', 'inWishList', 'inShoppingCar']
+    props: ['product', 'inLibrary', 'inWishList', 'inShoppingCar', 'hasOrder']
 }
 </script>
 

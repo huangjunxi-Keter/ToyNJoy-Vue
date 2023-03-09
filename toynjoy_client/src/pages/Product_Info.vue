@@ -1,7 +1,8 @@
 <template>
     <div class="bodyer">
         <product-basic-information :product="product" :photoList="photoList" />
-        <product-operation :product="product" :inLibrary="inLibrary" :inWishList="inWishList" :inShoppingCar="inShoppingCar" />
+        <product-operation :product="product" :inLibrary="inLibrary" :inWishList="inWishList" :inShoppingCar="inShoppingCar"
+            :hasOrder="hasOrder" />
         <div class="intro">
             关于这款游戏
             <div class="content">
@@ -27,10 +28,11 @@ export default {
     data() {
         return {
             product: {},
-            
+
             inLibrary: false,
             inWishList: false,
             inShoppingCar: false,
+            hasOrder: false,
 
             photoList: [],
             hardwareRequirements: {},
@@ -47,6 +49,17 @@ export default {
             params: { id: this.id },
             success: (response) => {
                 this.product = response.data;
+
+                this.product.browse += 1;
+                this.myAxios({
+                    method: 'post',
+                    url: 'Product/upd',
+                    data: this.product,
+                    success: (response) => {
+                        if (!response.data)
+                            console.error("更新浏览数失败");
+                    }
+                });
             }
         });
         //#endregion
@@ -74,9 +87,6 @@ export default {
         if (this.isLogin) {
             //#region 查询是否在库中
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: `Library/find`,
                 params: { productId: this.id },
                 success: (response) => {
@@ -87,9 +97,6 @@ export default {
 
             //#region 查询是否在愿望单中
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: `WishList/find`,
                 params: { productId: this.id },
                 success: (response) => {
@@ -97,16 +104,23 @@ export default {
                 }
             });
             //#endregion
-            
+
             //#region 查询是否在购物车中
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: `ShoppingCar/find`,
                 params: { productId: this.id },
                 success: (response) => {
                     this.inShoppingCar = response.data.length > 0;
+                }
+            });
+            //#endregion
+
+            //#region 是否存在订单
+            this.myAxios({
+                url: `Order/findItems`,
+                params: { productId: this.id },
+                success: (response) => {
+                    this.hasOrder = response.data.length > 0;
                 }
             });
             //#endregion

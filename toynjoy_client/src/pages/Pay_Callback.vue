@@ -26,9 +26,6 @@ export default {
     mounted() {
         if (this.$attrs.app_id) {
             this.myAxios({
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-            },
             method: 'post',
             url: 'Library/add',
             data: this.$attrs,

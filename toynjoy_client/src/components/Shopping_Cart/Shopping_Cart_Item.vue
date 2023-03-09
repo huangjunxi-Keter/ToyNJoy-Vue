@@ -15,9 +15,6 @@ export default {
     methods: {
         remove() {
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: 'ShoppingCar/del',
                 params: { id: this.id },
                 success: (response) => {

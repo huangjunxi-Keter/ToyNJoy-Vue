@@ -30,6 +30,17 @@ export default {
                 },
                 success: (response) => {
                     this.news = response.data;
+
+                    this.news.pageView += 1;
+                    this.myAxios({
+                        method: 'post',
+                        url: 'News/upd',
+                        data: this.news,
+                        success: (response) => {
+                            if (!response.data)
+                                console.error("更新浏览数失败");
+                        }
+                    });
                 }
             });
         }

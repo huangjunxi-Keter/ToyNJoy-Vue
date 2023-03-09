@@ -9,7 +9,7 @@
             </div>
             <div class="controls">
                 <input v-model="name" class="search" placeholder="按名称搜索">
-                <order-dropdowns :orderTypes="orderTypes" @updateOrder="getWishList" class="orderComponent" />
+                <dropdowns :dropdownsData="dropdownsData" @handleChange="getWishList" class="orderComponent" />
             </div>
         </div>
 
@@ -20,23 +20,24 @@
 <script>
 import { mapState } from 'vuex'
 import Product_Box_Long from '@/components/Product_Box_Long.vue';
-import Order_Dropdowns from '@/components/Basic/Order_Dropdowns.vue';
+import Dropdowns from '@/components/Basic/Dropdowns.vue';
 
 export default {
     name: 'Wish_List',
     components: {
         'product-box-long': Product_Box_Long,
-        'order-dropdowns': Order_Dropdowns
+        'dropdowns': Dropdowns
     },
     data() {
         return {
             name: '',
             wishLists: [],
-            orderTypes: [
-                { name: '名称', val: 'product.Name' },
-                { name: '价格', val: 'product.Price' },
-                { name: '添加日期', val: 'JoinDate' },
-                { name: '发行日期', val: 'product.ReleaseDate' }
+            dropdownsData: [
+                { name: '默认排序', val: '' },
+                { name: '根据名称排序', val: 'product.Name' },
+                { name: '根据价格排序', val: 'product.Price' },
+                { name: '根据添加日期排序', val: 'JoinDate' },
+                { name: '根据发行日期排序', val: 'product.ReleaseDate' }
             ]
         }
     },
@@ -49,15 +50,12 @@ export default {
         }
     },
     methods: {
-        getWishList(query) {
+        getWishList(orderby) {
             this.myAxios({
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('LoginUserToken')}`
-                },
                 url: 'WishList/find',
                 params: { 
                     name: this.name,
-                    ...query
+                    orderby
                 },
                 success: (response) => {
                     this.wishLists = response.data;
